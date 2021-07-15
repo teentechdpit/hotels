@@ -1,2 +1,2 @@
 # hotels
-Hotels repository for DPIT project
+Hotels repository for DPIT project backend part
