@@ -19,7 +19,7 @@ public class UserService {
     }
 
     public User getUserById(String userName) {
-        return userRepository.getById(userName);
+        return userRepository.findById(userName).get();
     }
 
     public User getAuthenticatedUser(String userName, String password) {

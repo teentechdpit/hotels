@@ -1,5 +1,6 @@
 package com.teentech.hotels;
 
+import com.teentech.hotels.model.Hotel;
 import com.teentech.hotels.model.User;
 import com.teentech.hotels.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;

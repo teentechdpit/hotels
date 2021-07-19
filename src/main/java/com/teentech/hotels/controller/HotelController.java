@@ -66,7 +66,7 @@ public class HotelController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity updateHotel(@PathVariable Long id) {
+    public ResponseEntity deleteHotel(@PathVariable Long id) {
         try {
             Optional<Hotel> hotel = hotelService.getHotelById(id);
             if (hotel.isPresent()) {
