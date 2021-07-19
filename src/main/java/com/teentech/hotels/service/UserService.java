@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+///necesar @sevice
 @Service
 public class UserService {
 
@@ -18,8 +19,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User getUserById(String userName) {
-        return userRepository.getById(userName);
+    public User getUserByName(String userName) {
+        return userRepository.getOne(userName);
     }
 
     public User getAuthenticatedUser(String userName, String password) {
@@ -27,6 +28,14 @@ public class UserService {
     }
 
     public void add(User user) {
+        userRepository.save(user);
+    }
+
+    public void deleteUser(User user) {
+        userRepository.delete(user);
+    }
+
+    public void updateUser(User user){
         userRepository.save(user);
     }
 }

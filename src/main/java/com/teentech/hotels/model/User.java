@@ -1,14 +1,16 @@
 package com.teentech.hotels.model;
 
+
+import com.teentech.hotels.model.UserRoles;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
+
 
 @Entity
 @Table(name = "users")
@@ -27,6 +29,10 @@ public class User implements Serializable {
 
     private String mail;
 
+    private String roleName;
 
+    @OneToOne
+    @JoinColumn(name = "roleName",referencedColumnName = "name")
+    private UserRoles role;
 }
 
