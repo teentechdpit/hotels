@@ -7,17 +7,24 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 @Entity
-@Table(name = "users_Rights")
+@Table(name = "rights")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRights implements Serializable{
+public class UserRights implements Serializable {
     @Id
-    String name;
+    @SequenceGenerator(name = "rights_id_seq", sequenceName = "rights_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rights_id_seq")
+    private Long id;
 
-    String description;
+    private String name;
 
+    private String description;
+
+    @ManyToMany(mappedBy = "rights")
+    private Collection<UserRole> userRoles;
 }

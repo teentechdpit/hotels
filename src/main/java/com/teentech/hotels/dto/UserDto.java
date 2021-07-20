@@ -1,33 +1,26 @@
-package com.teentech.hotels.model;
-
+package com.teentech.hotels.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
-
-@Entity
-@Table(name = "users")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements Serializable {
-
-    @Id
+public class UserDto implements Serializable
+{
     private String username;
-
-    private String password;
 
     private String language;
 
     private String mail;
 
-    @OneToOne
-    private UserRole roles;
-}
+    private String roleName;
 
+    private List<String> rights;
+}

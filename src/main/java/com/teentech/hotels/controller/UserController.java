@@ -1,5 +1,6 @@
 package com.teentech.hotels.controller;
 
+import com.teentech.hotels.dto.UserDto;
 import com.teentech.hotels.model.User;
 import com.teentech.hotels.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,11 @@ public class UserController {
 
 
     @GetMapping
-    public ResponseEntity<User> getAuthenticatedUser(@RequestParam String userName, @RequestParam String password) {
+    public ResponseEntity<UserDto> getAuthenticatedUser(@RequestParam String userName, @RequestParam String password) {
         try {
-            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-            User authUser = userService.getUserByName(userName);
-            if (authUser != null && bCryptPasswordEncoder.matches(password, authUser.getPassword())) {
-                return new ResponseEntity<User>(authUser, HttpStatus.OK);
+            UserDto authUser = userService.getUserByName(userName, password);
+            if (authUser != null ) {
+                return new ResponseEntity<UserDto>(authUser, HttpStatus.OK);
             }
             return new ResponseEntity("Not authorized", HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
