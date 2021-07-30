@@ -35,13 +35,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity addUser(@RequestBody User user) {
+    public ResponseEntity addUser(@RequestBody UserDto user) {
         try {
-            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-            String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
-            user.setPassword(encodedPassword);
-
-            userService.add(user);
+//            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+//            String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+//            user.setPassword(encodedPassword);
+//
+//            userService.add(user);
             return new ResponseEntity(HttpStatus.OK);
 
         } catch (Exception e) {

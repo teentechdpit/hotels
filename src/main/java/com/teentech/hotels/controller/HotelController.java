@@ -35,11 +35,10 @@ public class HotelController {
             log.info("Get hotel with id {}", id);
             Optional<Hotel> hotel = hotelService.getHotelById(id);
             if (hotel.isPresent()){
-                return new ResponseEntity(hotel, HttpStatus.OK);
+                return new ResponseEntity(hotel.get(), HttpStatus.OK);
             } else {
                 return new ResponseEntity("Nothing found",HttpStatus.NO_CONTENT);
             }
-
         } catch (Exception e) {
             return new ResponseEntity("Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
