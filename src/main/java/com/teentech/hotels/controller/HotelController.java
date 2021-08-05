@@ -50,6 +50,7 @@ public class HotelController {
             hotelService.add(hotel);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
+            log.error("Error while adding a new hotel into database", e);
             return new ResponseEntity("Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
