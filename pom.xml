@@ -98,9 +98,9 @@
 				</executions>
 				<configuration>
 					<driver>org.postgresql.Driver</driver>
-					<url>jdbc:postgresql://localhost:5432/hotels</url>
-					<user>postgres</user>
-					<password>postgresroot</password>
+					<url>${env.HOTEL_DB_URL}</url>
+					<user>${env.HOTEL_DB_USER}</user>
+					<password>${env.HOTEL_DB_PASSWORD}</password>
 					<baselineOnMigrate>true</baselineOnMigrate>
 					<schemas>public</schemas>
 					<locations>
