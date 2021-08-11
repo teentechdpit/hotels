@@ -8,8 +8,9 @@ import org.springframework.context.annotation.Bean;
 
 import javax.sql.DataSource;
 
-@SpringBootApplication
+
 @Log4j2
+@SpringBootApplication
 public class HotelsApplication {
 
 
