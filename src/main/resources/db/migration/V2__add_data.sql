@@ -49,6 +49,12 @@ INSERT INTO public.roles_rights(role_id, rights_id)
 INSERT INTO public.roles_rights(role_id, rights_id)
     VALUES (4, 1);
 
+INSERT INTO public.hotels(city, country, mail, name, paid, phone, stars)
+   VALUES ('Cluj-Napoca', 'Romania', 'test@test.ro', 'test', true, '0700000000', 5);
+
+INSERT INTO public.rooms(room_number, hotel_id, type, view, no_of_people)
+    VALUES (243, 1, 'double', 'sea', 2);
+
 INSERT INTO public.users(
 	username, language, mail, password, roles_id)
 	VALUES ('test', 'en', 'test@test.ro', '$2a$10$ntbZseyI0dHjzjagM5z7D.XBinX.nm1A3TrSfvvwrgI.eUEph38mS', 1);
