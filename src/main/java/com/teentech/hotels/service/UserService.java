@@ -3,6 +3,7 @@ package com.teentech.hotels.service;
 import com.teentech.hotels.dto.UserDto;
 import com.teentech.hotels.model.User;
 import com.teentech.hotels.repository.UserRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
-///necesar @sevice
 @Service
+@Log4j2
 public class UserService {
 
     @Autowired
@@ -40,7 +41,7 @@ public class UserService {
             List<String> rights = new ArrayList<>();
             user.get().getRoles().getRights().stream().forEach(r -> rights.add(r.getName()));
             userDto.setRights(rights);
-            return  userDto;
+            return userDto;
         }
         return null;
     }
@@ -62,11 +63,11 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public void updateUser(User user){
+    public void updateUser(User user) {
         userRepository.save(user);
     }
 
-    public void sendEmailForAuth(String from,String password,String to){
+    public void sendEmailForAuth(String to, String uuid) throws MessagingException {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
@@ -78,18 +79,19 @@ public class UserService {
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(from,password);
+                        return new PasswordAuthentication(System.getenv("EMAIL_ADRESS"), System.getenv("EMAIL_PASSWORD"));
                     }
                 });
         //compose message
-        try {
-            MimeMessage message = new MimeMessage(session);
-            message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
-            message.setSubject("CONFIRM_AUTHENTIFICATION");
-            message.setText("Link for finalization: localhost:8080/users/confirmation");
-            Transport.send(message);
-            System.out.println("message sent successfully");
-        } catch (MessagingException e) {throw new RuntimeException(e);}
+
+        MimeMessage message = new MimeMessage(session);
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+        message.setSubject("CONFIRM_AUTHENTIFICATION");
+        String applicationHost = System.getenv("APPLICATION_HOST");
+        String mailText = "Link for confirm your mail and set the password" + applicationHost + "/users/confirmation/" + uuid;
+        message.setText(mailText);
+        Transport.send(message);
+        log.info("Message send successfully");
 
     }
 }
