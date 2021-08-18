@@ -3,6 +3,7 @@ package com.teentech.hotels.controller;
 import com.teentech.hotels.dto.UserDto;
 import com.teentech.hotels.model.Registration;
 import com.teentech.hotels.model.User;
+import com.teentech.hotels.dto.UserRegistration;
 import com.teentech.hotels.repository.UserRoleRepository;
 import com.teentech.hotels.service.RegistrationService;
 import com.teentech.hotels.service.UserService;
@@ -51,7 +52,7 @@ public class UserController {
     public ResponseEntity addUser(@RequestBody UserDto user) {
         try {
             UUID uuid = UUID.randomUUID();
-            String uuidAsString = uuid. toString();
+            String uuidAsString = uuid.toString();
             User userToSave = new User();
             userToSave.setUsername(user.getUsername());
             userToSave.setLanguage(user.getLanguage());
@@ -73,7 +74,7 @@ public class UserController {
 
     @GetMapping("/confirmation/{uuid}")
     public ModelAndView confirmation(Model model, @PathVariable String uuid) {
-        model.addAttribute("user", new User());
+        model.addAttribute("newUserInfo", new UserRegistration());
         model.addAttribute("uuid", uuid);
 
         try {
@@ -87,15 +88,25 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String processRegister(User user) {
+    public ModelAndView processRegister(UserRegistration newUserInfo) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        String encodedPassword = passwordEncoder.encode(newUserInfo.getPassword());
 
-        User user2 = userService.getUserByName(user.getUsername());
-        user2.setPassword(encodedPassword);
-        userService.updateUser(user2);
+        Optional<Registration> registration = registrationService.getRegistrationById(newUserInfo.getUuid());
 
-        return "register_success";
+        if (registration.isPresent()) {
+            User newUser = userService.getUserByName(registration.get().getUsername());
+            newUser.setPassword(encodedPassword);
+            userService.updateUser(newUser);
+            try {
+                ModelAndView modelAndView = new ModelAndView();
+                modelAndView.setViewName("successfulRegistration");
+                return modelAndView;
+            } catch (Exception e) {
+                log.error("Error while creating success page, e");
+            }
+        }
+        return null;
     }
 
     @DeleteMapping
