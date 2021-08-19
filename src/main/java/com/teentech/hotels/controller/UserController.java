@@ -3,7 +3,7 @@ package com.teentech.hotels.controller;
 import com.teentech.hotels.dto.UserDto;
 import com.teentech.hotels.model.Registration;
 import com.teentech.hotels.model.User;
-import com.teentech.hotels.dto.UserRegistration;
+import com.teentech.hotels.dto.UserRegistrationDto;
 import com.teentech.hotels.repository.UserRoleRepository;
 import com.teentech.hotels.service.RegistrationService;
 import com.teentech.hotels.service.UserService;
@@ -77,7 +77,7 @@ public class UserController {
 
     @GetMapping("/confirmation/{uuid}")
     public ModelAndView confirmation(Model model, @PathVariable String uuid) {
-        model.addAttribute("newUserInfo", new UserRegistration());
+        model.addAttribute("newUserInfo", new UserRegistrationDto());
         model.addAttribute("uuid", uuid);
 
         ModelAndView modelAndView = new ModelAndView();
@@ -87,7 +87,7 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public ModelAndView processRegister(UserRegistration newUserInfo) {
+    public ModelAndView processRegister(UserRegistrationDto newUserInfo) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(newUserInfo.getPassword());
 
