@@ -48,7 +48,7 @@ public class UserService {
 
     public User getUserByName(String userName) {
         Optional<User> user = userRepository.findById(userName);
-        return user.get();
+        return user.orElse(null);
     }
 
     public User getAuthenticatedUser(String userName, String password) {
