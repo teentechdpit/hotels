@@ -71,10 +71,10 @@ public class UserService {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class",
-                "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", "465");
+        props.put("mail.smtp.ssl.checkserveridentity", true);
         //get Session
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
@@ -86,12 +86,12 @@ public class UserService {
 
         MimeMessage message = new MimeMessage(session);
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-        message.setSubject("CONFIRM_AUTHENTIFICATION");
+        message.setSubject("Confirm authentication to HotelListe");
         String applicationHost = System.getenv("APPLICATION_HOST");
-        String mailText = "Link for confirm your mail and set the password" + applicationHost + "/users/confirmation/" + uuid;
+        String mailText = "Link for confirm your mail and set the password " + applicationHost + "/users/confirmation/" + uuid;
         message.setText(mailText);
         Transport.send(message);
-        log.info("Message send successfully");
+        log.info("Email send successfully to address {}", to);
 
     }
 }

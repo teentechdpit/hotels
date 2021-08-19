@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.mail.MessagingException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -44,7 +45,7 @@ public class UserController {
             }
             return new ResponseEntity("Not authorized", HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
-            return new ResponseEntity("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity("Error. User or password are incorrect", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -65,10 +66,12 @@ public class UserController {
             registrationService.add(registration);
             userService.sendEmailForAuth(user.getMail(), uuidAsString);
             return new ResponseEntity(HttpStatus.OK);
-
+        } catch (MessagingException e) {
+            log.error("Error while sending mail to user", e);
+            return new ResponseEntity("Mail error", HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             log.error("Error while adding user on DB", e);
-            return new ResponseEntity("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity("Error while add user on database", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -77,14 +80,10 @@ public class UserController {
         model.addAttribute("newUserInfo", new UserRegistration());
         model.addAttribute("uuid", uuid);
 
-        try {
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setViewName("setPassword");
-            return modelAndView;
-        } catch (Exception e) {
-            log.error("Error while setting password, e");
-        }
-        return null;
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("setPassword");
+        return modelAndView;
+
     }
 
     @PostMapping("/registration")
@@ -98,13 +97,11 @@ public class UserController {
             User newUser = userService.getUserByName(registration.get().getUsername());
             newUser.setPassword(encodedPassword);
             userService.updateUser(newUser);
-            try {
-                ModelAndView modelAndView = new ModelAndView();
-                modelAndView.setViewName("successfulRegistration");
-                return modelAndView;
-            } catch (Exception e) {
-                log.error("Error while creating success page, e");
-            }
+            registrationService.delete(registration.get());
+
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.setViewName("successfulRegistration");
+            return modelAndView;
         }
         return null;
     }
@@ -119,7 +116,7 @@ public class UserController {
             return new ResponseEntity(HttpStatus.OK);
 
         } catch (Exception e) {
-            return new ResponseEntity("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity("Error while delete user:" + userName, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -132,7 +129,7 @@ public class UserController {
 
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity("Error while update the user" + user.getUsername(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
