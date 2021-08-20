@@ -1,15 +1,12 @@
 package com.teentech.hotels.service;
 
 
-import com.teentech.hotels.model.Hotel;
 import com.teentech.hotels.model.HotelRooms;
 import com.teentech.hotels.model.HotelRoomsPK;
-import com.teentech.hotels.repository.HotelRepository;
 import com.teentech.hotels.repository.HotelRoomsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
