@@ -1,8 +1,6 @@
 package com.teentech.hotels.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -12,6 +10,9 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class HotelRoomsPK implements Serializable {
 
     @Column(name = "room_number")

@@ -24,15 +24,11 @@ public class CleanController {
     private CleanService cleanService;
 
     @GetMapping
-    public ResponseEntity getHotelById(@RequestBody HotelRoomsPK hotelRoomsPK) {
+    public ResponseEntity<CleanDto> getCleanById(@RequestParam long hotelId, @RequestParam long roomNumber ) {
         try {
+            HotelRoomsPK hotelRoomsPK = HotelRoomsPK.builder().hotelId(hotelId).roomNumber(roomNumber).build();
             Clean clean = cleanService.findCleanById(hotelRoomsPK);
-            CleanDto cleanDto = new CleanDto();
-            cleanDto.setHotelId(clean.getHotelId());
-            cleanDto.setRoomNumber(clean.getRoomNumber());
-            cleanDto.setLastCleanDay(clean.getLastCleanDay());
-            cleanDto.setLastChangeLingerie(clean.getLastChangeLingerie());
-            cleanDto.setLastChangeTowels(clean.getLastChangeTowels());
+            CleanDto cleanDto = CleanDto.builder().hotelId(clean.getHotelId()).roomNumber(clean.getRoomNumber()).lastCleanDay(clean.getLastCleanDay()).lastChangeLingerie(clean.getLastChangeLingerie()).lastChangeTowels(clean.getLastChangeTowels()).build();
             return new ResponseEntity<CleanDto>(cleanDto, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while getting cleaning info", e);
