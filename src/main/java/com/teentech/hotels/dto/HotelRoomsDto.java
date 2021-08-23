@@ -6,21 +6,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CleanDto implements Serializable
-{
-    private long hotelId;
+public class HotelRoomsDto implements Serializable {
 
     private long roomNumber;
 
-    private Date lastCleanDay;
+    private long hotelId;
 
-    private Date lastChangeLingerie;
+    private String type;
 
-    private Date lastChangeTowels;
+    private String roomView;
+
+    private int noOfPeople;
 }

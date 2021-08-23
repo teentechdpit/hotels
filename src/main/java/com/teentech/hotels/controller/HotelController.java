@@ -1,5 +1,6 @@
 package com.teentech.hotels.controller;
 
+import com.teentech.hotels.dto.HotelDto;
 import com.teentech.hotels.model.Hotel;
 import com.teentech.hotels.service.HotelService;
 import lombok.extern.log4j.Log4j2;
@@ -45,8 +46,17 @@ public class HotelController {
     }
 
     @PostMapping
-    public ResponseEntity addHotel(@RequestBody Hotel hotel) {
+    public ResponseEntity addHotel(@RequestBody HotelDto hotelDto) {
         try {
+            Hotel hotel = new Hotel();
+            hotel.setId(hotelDto.getId());
+            hotel.setName(hotelDto.getName());
+            hotel.setCountry(hotelDto.getCountry());
+            hotel.setCity(hotelDto.getCity());
+            hotel.setStars(hotelDto.getStars());
+            hotel.setMail(hotelDto.getMail());
+            hotel.setPhone(hotelDto.getPhone());
+            hotel.setPaid(hotelDto.isPaid());
             hotelService.add(hotel);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
@@ -56,8 +66,17 @@ public class HotelController {
     }
 
     @PutMapping
-    public ResponseEntity updateHotel(@RequestBody Hotel hotel) {
+    public ResponseEntity updateHotel(@RequestBody HotelDto hotelDto) {
         try {
+            Hotel hotel = new Hotel();
+            hotel.setId(hotelDto.getId());
+            hotel.setName(hotelDto.getName());
+            hotel.setCountry(hotelDto.getCountry());
+            hotel.setCity(hotelDto.getCity());
+            hotel.setStars(hotelDto.getStars());
+            hotel.setMail(hotelDto.getMail());
+            hotel.setPhone(hotelDto.getPhone());
+            hotel.setPaid(hotelDto.isPaid());
             hotelService.update(hotel);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
