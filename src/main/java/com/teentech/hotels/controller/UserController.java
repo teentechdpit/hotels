@@ -123,13 +123,17 @@ public class UserController {
 
 
     @PutMapping
-    public ResponseEntity updateUser(@RequestBody User user) {
+    public ResponseEntity updateUser(@RequestBody UserDto userDto) {
         try {
+            User user = new User();
+            user.setUsername(userDto.getUsername());
+            user.setLanguage(userDto.getLanguage());
+            user.setMail(userDto.getMail());
+            user.setRoles(userRoleRepository.findByName(userDto.getRoleName()));
             userService.updateUser(user);
-
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity("Error while update the user" + user.getUsername(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity("Error while update the user" + userDto.getUsername(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -37,8 +37,14 @@ public class CleanController {
     }
 
     @PostMapping
-    public ResponseEntity addClean(@RequestBody Clean clean) {
+    public ResponseEntity addClean(@RequestBody CleanDto cleanDto) {
         try {
+            Clean clean = new Clean();
+            clean.setHotelId(cleanDto.getHotelId());
+            clean.setRoomNumber(cleanDto.getRoomNumber());
+            clean.setLastCleanDay(cleanDto.getLastCleanDay());
+            clean.setLastChangeLingerie(cleanDto.getLastChangeLingerie());
+            clean.setLastChangeTowels(cleanDto.getLastChangeTowels());
             cleanService.add(clean);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
@@ -48,8 +54,14 @@ public class CleanController {
     }
 
     @PutMapping
-    public ResponseEntity updateClean(@RequestBody Clean clean) {
+    public ResponseEntity updateClean(@RequestBody CleanDto cleanDto) {
         try {
+            Clean clean = new Clean();
+            clean.setHotelId(cleanDto.getHotelId());
+            clean.setRoomNumber(cleanDto.getRoomNumber());
+            clean.setLastCleanDay(cleanDto.getLastCleanDay());
+            clean.setLastChangeLingerie(cleanDto.getLastChangeLingerie());
+            clean.setLastChangeTowels(cleanDto.getLastChangeTowels());
             cleanService.update(clean);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {

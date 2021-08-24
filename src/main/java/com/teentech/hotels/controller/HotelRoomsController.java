@@ -1,5 +1,6 @@
 package com.teentech.hotels.controller;
 
+import com.teentech.hotels.dto.HotelRoomsDto;
 import com.teentech.hotels.model.HotelRooms;
 import com.teentech.hotels.model.HotelRoomsPK;
 import com.teentech.hotels.service.HotelRoomsService;
@@ -20,8 +21,14 @@ public class HotelRoomsController {
     private HotelRoomsService hotelRoomsService;
 
     @PostMapping
-    public ResponseEntity addRoom(@RequestBody HotelRooms hotelRoom) {
+    public ResponseEntity addRoom(@RequestBody HotelRoomsDto hotelRoomDto) {
         try {
+            HotelRooms hotelRoom = new HotelRooms();
+            hotelRoom.setRoomNumber(hotelRoomDto.getRoomNumber());
+            hotelRoom.setHotelId(hotelRoomDto.getHotelId());
+            hotelRoom.setType(hotelRoomDto.getType());
+            hotelRoom.setRoomView(hotelRoomDto.getRoomView());
+            hotelRoom.setNoOfPeople(hotelRoomDto.getNoOfPeople());
             hotelRoomsService.add(hotelRoom);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
