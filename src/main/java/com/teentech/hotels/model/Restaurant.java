@@ -1,30 +1,23 @@
 package com.teentech.hotels.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 
 @Entity
-@IdClass(HotelRoomsPK.class)
 @Table(name = "restaurant")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Restaurant implements Serializable {
 
     @Id
-    @Column(name = "hotel_id")
-    private long hotelId;
-
-    @Id
-    @Column(name = "room_number")
-    private long roomNumber;
+    @Column(name = "reservation_id")
+    private int reservationId;
 
     @Column(name = "last_breakfast_date")
     private Date lastBreakfastDate;

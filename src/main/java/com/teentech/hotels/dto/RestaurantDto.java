@@ -3,7 +3,7 @@ package com.teentech.hotels.dto;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 @Getter
 @Setter
@@ -12,9 +12,7 @@ import java.util.Date;
 @Builder
 public class RestaurantDto implements Serializable
 {
-    private long hotelId;
-
-    private long roomNumber;
+    private int reservationId;
 
     private Date lastBreakfastDate;
 

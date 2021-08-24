@@ -1,14 +1,12 @@
 CREATE TABLE public.restaurant
 (
-    hotel_id bigint,
-    room_number bigint,
+    reservation_id int,
     last_breakfast_date DATE,
     last_lunch_date DATE,
     last_dinner_date DATE,
 
-    CONSTRAINT hotel_room FOREIGN KEY (room_number, hotel_id)
-                REFERENCES public.rooms (room_number, hotel_id)
-                ON UPDATE NO ACTION
-                ON DELETE NO ACTION,
-    PRIMARY KEY (room_number, hotel_id)
+    CONSTRAINT hotel_room FOREIGN KEY (reservation_id)
+                REFERENCES public.reservations (id)
+                ON UPDATE NO ACTION,
+    PRIMARY KEY (reservation_id)
 );

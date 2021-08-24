@@ -60,6 +60,7 @@ public class UserController {
             userToSave.setMail(user.getMail());
             userToSave.setRoles(userRoleRepository.findByName(user.getRoleName()));
             userToSave.setPassword("Not_Verified");
+            userToSave.setHotelId(user.getHotelId());
 
             userService.add(userToSave);
             Registration registration = new Registration(uuidAsString, user.getUsername());
