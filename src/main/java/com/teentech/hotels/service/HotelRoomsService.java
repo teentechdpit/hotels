@@ -30,8 +30,8 @@ public class HotelRoomsService {
         return currentHotelRoom.orElse(null);
     }
 
-    public List<HotelRooms> findAvailableRoom(Long hotelId, String View, Date startDate, Date endDate, int noOfPeople) {
-        List<HotelRooms> foundRooms = hotelRoomsRepository.findAvailableHotelRooms(hotelId, View, startDate, endDate, noOfPeople);
+    public List<HotelRooms> findAvailableRoom(Long hotelId, String view, Date startDate, Date endDate, int noOfPeople, String roomType) {
+        List<HotelRooms> foundRooms = hotelRoomsRepository.findAvailableHotelRooms(hotelId, view, noOfPeople, roomType, startDate, endDate);
         return foundRooms;
     }
 

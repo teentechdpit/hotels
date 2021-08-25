@@ -43,9 +43,9 @@ public class HotelRoomsController {
     }
 
     @GetMapping
-    public ResponseEntity<List<HotelRoomsDto>> findRooms(@RequestParam Long hotelId, @RequestParam String View, @RequestParam java.sql.Date startDate, @RequestParam Date endDate, @RequestParam int noOfPeople) {
+    public ResponseEntity<List<HotelRoomsDto>> findRooms(@RequestParam Long hotelId, @RequestParam String view, @RequestParam java.sql.Date startDate, @RequestParam Date endDate, @RequestParam int noOfPeople, @RequestParam String roomType) {
         try {
-            List<HotelRooms> availableRooms = hotelRoomsService.findAvailableRoom(hotelId, View, startDate, endDate, noOfPeople);
+            List<HotelRooms> availableRooms = hotelRoomsService.findAvailableRoom(hotelId, view, startDate, endDate, noOfPeople, roomType);
             if (availableRooms.isEmpty()) {
                 return new ResponseEntity("No available room found", HttpStatus.NO_CONTENT);
             }

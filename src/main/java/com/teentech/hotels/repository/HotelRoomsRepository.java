@@ -13,6 +13,6 @@ import java.util.List;
 @Repository
 public interface HotelRoomsRepository  extends JpaRepository<HotelRooms, HotelRoomsPK> {
 
-    @Query("SELECT room FROM HotelRooms room WHERE room.hotelId = ?1 AND room.view = ?2 AND room.noOfPeople = ?5 AND MUST NOT EXISTS (SELECT reservation FROM Reservations WHERE reservation.startDate > ?3 OR reservation.endDate < ?4)")
-    List<HotelRooms> findAvailableHotelRooms(Long hotelId, String View, Date startDate, Date endDate, int noOfPeople);
+    @Query(value = "SELECT * FROM rooms WHERE hotel_id = ?1 AND room_view = ?2 AND no_of_people = ?3 AND type = ?4 AND NOT EXISTS (SELECT * FROM reservations WHERE reservations.room_number = rooms.room_number AND ((end_date > ?5 AND end_date < ?6) OR (start_date > ?5 AND end_date < ?6) OR (start_date < ?5 AND end_date > ?6)))", nativeQuery = true)
+    List<HotelRooms> findAvailableHotelRooms(Long hotelId, String view, int noOfPeople,  String roomType, Date startDate, Date endDate);
 }
