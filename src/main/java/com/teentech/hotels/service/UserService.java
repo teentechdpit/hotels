@@ -38,6 +38,7 @@ public class UserService {
             userDto.setUsername(user.get().getUsername());
             userDto.setRoleName(user.get().getRoles().getName());
             userDto.setLanguage(user.get().getLanguage());
+            userDto.setHotelId(user.get().getHotelId());
             List<String> rights = new ArrayList<>();
             user.get().getRoles().getRights().stream().forEach(r -> rights.add(r.getName()));
             userDto.setRights(rights);

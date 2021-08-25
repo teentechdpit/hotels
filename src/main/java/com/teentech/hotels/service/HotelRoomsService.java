@@ -19,7 +19,7 @@ public class HotelRoomsService {
 //        return hotelRepository.findAll();
 //    }
 //
-//    public Optional<Hotel> getHotelById(Long id) {
+//    public Optional<Hotel> getCleanById(Long id) {
 //        return hotelRepository.findById(id);
 //    }
 
