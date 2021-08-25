@@ -7,6 +7,7 @@ import com.teentech.hotels.dto.UserRegistrationDto;
 import com.teentech.hotels.repository.UserRoleRepository;
 import com.teentech.hotels.service.RegistrationService;
 import com.teentech.hotels.service.UserService;
+import com.teentech.hotels.util.UserConverter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,13 +55,8 @@ public class UserController {
         try {
             UUID uuid = UUID.randomUUID();
             String uuidAsString = uuid.toString();
-            User userToSave = new User();
-            userToSave.setUsername(user.getUsername());
-            userToSave.setLanguage(user.getLanguage());
-            userToSave.setMail(user.getMail());
-            userToSave.setRoles(userRoleRepository.findByName(user.getRoleName()));
+            User userToSave = UserConverter.convertFromDtoToEntity(user);
             userToSave.setPassword("Not_Verified");
-            userToSave.setHotelId(user.getHotelId());
 
             userService.add(userToSave);
             Registration registration = new Registration(uuidAsString, user.getUsername());
@@ -126,11 +122,7 @@ public class UserController {
     @PutMapping
     public ResponseEntity updateUser(@RequestBody UserDto userDto) {
         try {
-            User user = new User();
-            user.setUsername(userDto.getUsername());
-            user.setLanguage(userDto.getLanguage());
-            user.setMail(userDto.getMail());
-            user.setRoles(userRoleRepository.findByName(userDto.getRoleName()));
+            User user = UserConverter.convertFromDtoToEntity(userDto);
             userService.updateUser(user);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {

@@ -3,6 +3,7 @@ package com.teentech.hotels.service;
 import com.teentech.hotels.dto.ReservationDto;
 import com.teentech.hotels.model.Reservations;
 import com.teentech.hotels.repository.ReservationsRepository;
+import com.teentech.hotels.util.ReservationsConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,25 +20,8 @@ public class ReservationService {
 
     public ReservationDto getReservationByHotelIdAndRoomNumber(Long hotelId, Long roomNumber) {
         Optional<Reservations> currentReservation = Optional.ofNullable(reservationRepository.findByHotelIdAndRoomNumber(hotelId, roomNumber));
-
         if (currentReservation.isPresent()) {
-            ReservationDto reservationDto = new ReservationDto();
-
-            reservationDto.setHotelId(currentReservation.get().getHotelId());
-
-            reservationDto.setRoomNumber(currentReservation.get().getRoomNumber());
-
-            reservationDto.setStartDate(currentReservation.get().getStartDate());
-            reservationDto.setEndDate(currentReservation.get().getEndDate());
-
-            reservationDto.setName(currentReservation.get().getName());
-            reservationDto.setSurname(currentReservation.get().getSurname());
-
-            reservationDto.setPassportId(currentReservation.get().getPassportId());
-
-            reservationDto.setEmail(currentReservation.get().getEmail());
-
-            reservationDto.setPhoneNumber(currentReservation.get().getPhone());
+            ReservationDto reservationDto = ReservationsConverter.convertFromEntityToDto(currentReservation.get());
 
             return reservationDto;
         }

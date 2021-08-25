@@ -12,8 +12,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto implements Serializable
-{
+public class UserDto implements Serializable {
+
     private String username;
 
     private String language;

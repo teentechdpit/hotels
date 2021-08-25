@@ -26,7 +26,7 @@ public class ReservationDto implements Serializable {
 
     private String email;
 
-    private String phoneNumber;
+    private String phone;
 
     private Boolean breakfast;
     private Boolean lunch;
