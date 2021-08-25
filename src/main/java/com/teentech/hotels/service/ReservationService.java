@@ -6,8 +6,8 @@ import com.teentech.hotels.repository.ReservationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.sql.Date;
+import java.util.*;
 
 @Service
 public class ReservationService {
@@ -16,39 +16,6 @@ public class ReservationService {
     private ReservationsRepository reservationRepository;
 
     public List<Reservations> getAll() { return reservationRepository.findAll(); }
-
-    public ReservationDto getReservationByHotelIdAndRoomNumber(Long hotelId, Long roomNumber) {
-        Optional<Reservations> currentReservation = Optional.ofNullable(reservationRepository.findByHotelIdAndRoomNumber(hotelId, roomNumber));
-
-        if (currentReservation.isPresent()) {
-            ReservationDto reservationDto = new ReservationDto();
-
-            reservationDto.setHotelId(currentReservation.get().getHotelId());
-
-            reservationDto.setRoomNumber(currentReservation.get().getRoomNumber());
-
-            reservationDto.setStartDate(currentReservation.get().getStartDate());
-            reservationDto.setEndDate(currentReservation.get().getEndDate());
-
-            reservationDto.setName(currentReservation.get().getName());
-            reservationDto.setSurname(currentReservation.get().getSurname());
-
-            reservationDto.setPassportId(currentReservation.get().getPassportId());
-
-            reservationDto.setEmail(currentReservation.get().getEmail());
-
-            reservationDto.setPhoneNumber(currentReservation.get().getPhone());
-
-            return reservationDto;
-        }
-
-        return null;
-    }
-
-    public Reservations getReservation(Long hotelId, Long roomNumber) {
-        Optional<Reservations> reservation = Optional.ofNullable(reservationRepository.findByHotelIdAndRoomNumber(hotelId, roomNumber));
-        return reservation.orElse(null);
-    }
 
     public void add(Reservations reservation) {
         reservationRepository.save(reservation);
@@ -66,4 +33,11 @@ public class ReservationService {
         Optional<Reservations> reservation = reservationRepository.findById(id);
         return reservation.orElse(null);
     }
+
+    public Reservations getCurrentReservation(Long hotelId, Long roomNumber) {
+        java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+        Reservations reservation = reservationRepository.findReservation(hotelId, roomNumber, currentDate);
+        return reservation;
+    }
+
 }

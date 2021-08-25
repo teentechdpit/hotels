@@ -7,6 +7,8 @@ import com.teentech.hotels.repository.HotelRoomsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,23 +17,10 @@ public class HotelRoomsService {
     @Autowired
     private HotelRoomsRepository hotelRoomsRepository;
 
-//    public List<Hotel> getAllHotels() {
-//        return hotelRepository.findAll();
-//    }
-//
-//    public Optional<Hotel> getCleanById(Long id) {
-//        return hotelRepository.findById(id);
-//    }
-
     public void add(HotelRooms hotelRoom) {
         hotelRoomsRepository.save(hotelRoom);
     }
 
-
-//    public void update(Hotel hotel) {
-//        hotelRepository.save(hotel);
-//    }
-//
     public void delete(HotelRooms hotelRoom) {
         hotelRoomsRepository.delete(hotelRoom);
     }
@@ -41,5 +30,9 @@ public class HotelRoomsService {
         return currentHotelRoom.orElse(null);
     }
 
+    public List<HotelRooms> findAvailableRoom(Long hotelId, String View, Date startDate, Date endDate, int noOfPeople) {
+        List<HotelRooms> foundRooms = hotelRoomsRepository.findAvailableHotelRooms(hotelId, View, startDate, endDate, noOfPeople);
+        return foundRooms;
+    }
 
 }

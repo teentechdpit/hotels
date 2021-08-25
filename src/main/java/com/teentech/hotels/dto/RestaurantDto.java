@@ -12,7 +12,7 @@ import java.sql.Date;
 @Builder
 public class RestaurantDto implements Serializable
 {
-    private int reservationId;
+    private Long reservationId;
 
     private Date lastBreakfastDate;
 

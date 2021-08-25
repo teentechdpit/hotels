@@ -1,5 +1,6 @@
 package com.teentech.hotels.controller;
 
+import com.teentech.hotels.dto.ReservationDto;
 import com.teentech.hotels.dto.RestaurantDto;
 import com.teentech.hotels.model.Reservations;
 import com.teentech.hotels.model.Restaurant;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -29,14 +31,11 @@ public class RestaurantController {
     @GetMapping
     public ResponseEntity<RestaurantDto> getRestaurantByHotelRoomPk(@RequestParam long hotelId, @RequestParam long roomNumber) {
         try {
-            Reservations reservations = reservationService.getReservation(hotelId, roomNumber);
-            Date currentDate =   new Date(System.currentTimeMillis());
-            LocalDate currentDateConverted = currentDate.toLocalDate();
-            LocalDate endDate = reservations.getEndDate().toLocalDate();
-            if(endDate.isBefore(currentDateConverted)) {
-                return new ResponseEntity("There is no reservation active", HttpStatus.INTERNAL_SERVER_ERROR);
+            Reservations reservation = reservationService.getCurrentReservation(hotelId, roomNumber);
+            if(reservation == null) {
+                return new ResponseEntity("There is no reservation active", HttpStatus.NO_CONTENT);
             }
-            int reservation_id = reservations.getId();
+            int reservation_id = reservation.getId();
             Restaurant currentRestaurant = restaurantService.findRestaurantByReservationId(reservation_id);
             RestaurantDto currentRestaurantDto = RestaurantDto.builder().reservationId(currentRestaurant.getReservationId()).lastBreakfastDate(currentRestaurant.getLastBreakfastDate()).lastLunchDate(currentRestaurant.getLastLunchDate()).lastDinnerDate(currentRestaurant.getLastDinnerDate()).build();
             return new ResponseEntity<RestaurantDto>(currentRestaurantDto, HttpStatus.OK);
@@ -49,6 +48,10 @@ public class RestaurantController {
     @PutMapping
     public ResponseEntity updateRestaurant(@RequestBody RestaurantDto currentRestaurantDto) {
         try {
+            Reservations reservation = reservationService.getReservationById(currentRestaurantDto.getReservationId());
+            if(reservation == null) {
+                return new ResponseEntity("There is no reservation active", HttpStatus.NO_CONTENT);
+            }
             Restaurant currentRestaurant = Restaurant.builder().reservationId(currentRestaurantDto.getReservationId()).lastBreakfastDate(currentRestaurantDto.getLastBreakfastDate()).lastLunchDate(currentRestaurantDto.getLastLunchDate()).lastDinnerDate(currentRestaurantDto.getLastDinnerDate()).build();
             restaurantService.update(currentRestaurant);
             return new ResponseEntity(HttpStatus.OK);

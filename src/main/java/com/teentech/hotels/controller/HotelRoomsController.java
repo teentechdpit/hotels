@@ -3,12 +3,17 @@ package com.teentech.hotels.controller;
 import com.teentech.hotels.dto.HotelRoomsDto;
 import com.teentech.hotels.model.HotelRooms;
 import com.teentech.hotels.model.HotelRoomsPK;
+import com.teentech.hotels.repository.HotelRoomsRepository;
 import com.teentech.hotels.service.HotelRoomsService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -33,6 +38,25 @@ public class HotelRoomsController {
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while adding a new room into database", e);
+            return new ResponseEntity("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<HotelRoomsDto>> findRooms(@RequestParam Long hotelId, @RequestParam String View, @RequestParam java.sql.Date startDate, @RequestParam Date endDate, @RequestParam int noOfPeople) {
+        try {
+            List<HotelRooms> availableRooms = hotelRoomsService.findAvailableRoom(hotelId, View, startDate, endDate, noOfPeople);
+            if (availableRooms.isEmpty()) {
+                return new ResponseEntity("No available room found", HttpStatus.NO_CONTENT);
+            }
+            List<HotelRoomsDto> availableRoomsDto = new ArrayList<>();
+            for (HotelRooms availableRoom : availableRooms) {
+                HotelRoomsDto availableRoomDto = HotelRoomsDto.builder().roomNumber(availableRoom.getRoomNumber()).hotelId(availableRoom.getHotelId()).type(availableRoom.getType()).roomView(availableRoom.getRoomView()).noOfPeople(availableRoom.getNoOfPeople()).build();
+                availableRoomsDto.add(availableRoomDto);
+            }
+            return new ResponseEntity<List<HotelRoomsDto>>(availableRoomsDto, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error while getting available rooms", e);
             return new ResponseEntity("Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
