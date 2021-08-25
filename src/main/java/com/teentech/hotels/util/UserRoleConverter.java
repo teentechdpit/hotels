@@ -2,7 +2,9 @@ package com.teentech.hotels.util;
 
 import com.teentech.hotels.dto.RoleDto;
 import com.teentech.hotels.model.UserRole;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class UserRoleConverter {
 
     public static RoleDto convertFromEntityToDto(UserRole userRole) {

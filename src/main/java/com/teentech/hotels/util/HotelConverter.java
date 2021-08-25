@@ -2,7 +2,9 @@ package com.teentech.hotels.util;
 
 import com.teentech.hotels.dto.HotelDto;
 import com.teentech.hotels.model.Hotel;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class HotelConverter {
 
     public static Hotel convertFromDtoToEntity(HotelDto hotelDto) {

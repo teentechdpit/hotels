@@ -2,7 +2,9 @@ package com.teentech.hotels.util;
 
 import com.teentech.hotels.dto.CleanDto;
 import com.teentech.hotels.model.Clean;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class CleanConverter {
 
     public static Clean convertFromDtoToEntity(CleanDto cleanDto) {
