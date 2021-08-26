@@ -29,9 +29,10 @@ public class UserRoleController {
             if (!roles.isEmpty()) {
                 return new ResponseEntity<List<RoleDto>>(roles, HttpStatus.OK);
             }
+            log.error("There are no roles in the DB");
         } catch( Exception e ) {
-            log.error("Error while getting roles from db", e);
+            log.error("Error while getting roles from DB", e);
         }
-        return new ResponseEntity("Error while getting roles from db", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

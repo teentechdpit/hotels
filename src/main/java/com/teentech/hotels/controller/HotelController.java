@@ -27,7 +27,8 @@ public class HotelController {
             log.info("Get all hotels called");
             return new ResponseEntity(hotelService.getAllHotels(), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Error while getting all hotels", e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -42,7 +43,8 @@ public class HotelController {
                 return new ResponseEntity("Nothing found",HttpStatus.NO_CONTENT);
             }
         } catch (Exception e) {
-            return new ResponseEntity("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Error while getting a hotel", e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -54,7 +56,7 @@ public class HotelController {
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while adding a new hotel into database", e);
-            return new ResponseEntity("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -65,7 +67,8 @@ public class HotelController {
             hotelService.update(hotel);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Error while updating a hotel", e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -78,7 +81,8 @@ public class HotelController {
             }
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Error while deleting a hotel", e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

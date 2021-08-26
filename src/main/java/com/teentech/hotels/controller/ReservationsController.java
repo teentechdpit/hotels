@@ -35,7 +35,8 @@ public class ReservationsController {
             }
             return new ResponseEntity("Not found", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity("Error. Reservation details are incorrect", HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Reservation details are incorrect", e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -49,7 +50,7 @@ public class ReservationsController {
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while adding a reservation in the database", e);
-            return new ResponseEntity("Error while adding a reservation in the database", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -64,7 +65,8 @@ public class ReservationsController {
 
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity("Error while deleting reservation", HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Error while deleting reservation", e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -75,7 +77,8 @@ public class ReservationsController {
 
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity("Error while updating reservation", HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Error while updating reservation", e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

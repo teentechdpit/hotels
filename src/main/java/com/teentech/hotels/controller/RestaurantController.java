@@ -42,7 +42,7 @@ public class RestaurantController {
             return new ResponseEntity<RestaurantDto>(currentRestaurantDto, HttpStatus.OK);
         } catch(Exception e) {
             log.error("Error while getting restaurant info", e);
-            return new ResponseEntity("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -59,7 +59,7 @@ public class RestaurantController {
             return new ResponseEntity(HttpStatus.OK);
         } catch(Exception e) {
             log.error("Error while updating restaurant", e);
-            return new ResponseEntity("Error while updating restaurant", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

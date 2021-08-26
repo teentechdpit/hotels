@@ -34,7 +34,7 @@ public class HotelRoomsController {
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while adding a new room into database", e);
-            return new ResponseEntity("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -53,7 +53,7 @@ public class HotelRoomsController {
             return new ResponseEntity<List<HotelRoomsDto>>(availableRoomsDto, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while getting available rooms", e);
-            return new ResponseEntity("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -64,8 +64,8 @@ public class HotelRoomsController {
             hotelRoomsService.delete(room);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
-            log.error("Error while deleting a  room from the database", e);
-            return new ResponseEntity("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Error while deleting a room from the database", e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
