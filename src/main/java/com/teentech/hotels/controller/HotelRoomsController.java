@@ -27,14 +27,14 @@ public class HotelRoomsController {
     private HotelRoomsService hotelRoomsService;
 
     @PostMapping
-    public ResponseEntity addRoom(@RequestBody HotelRoomsDto hotelRoomDto) {
+    public ResponseEntity<Boolean> addRoom(@RequestBody HotelRoomsDto hotelRoomDto) {
         try {
             HotelRooms hotelRoom = HotelRoomsConverter.convertFromDtoToEntity(hotelRoomDto);
             hotelRoomsService.add(hotelRoom);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while adding a new room into database", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(true, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -43,7 +43,8 @@ public class HotelRoomsController {
         try {
             List<HotelRooms> availableRooms = hotelRoomsService.findAvailableRoom(hotelId, view, startDate, endDate, noOfPeople, roomType);
             if (availableRooms.isEmpty()) {
-                return new ResponseEntity("No available room found", HttpStatus.NO_CONTENT);
+                log.error("No available room found");
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             List<HotelRoomsDto> availableRoomsDto = new ArrayList<>();
             for (HotelRooms availableRoom : availableRooms) {
@@ -53,19 +54,19 @@ public class HotelRoomsController {
             return new ResponseEntity<List<HotelRoomsDto>>(availableRoomsDto, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while getting available rooms", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping
-    public ResponseEntity deleteRoom(@RequestBody HotelRoomsPK hotelRoomPK) {
+    public ResponseEntity<Boolean> deleteRoom(@RequestBody HotelRoomsPK hotelRoomPK) {
         try {
             HotelRooms room = hotelRoomsService.findHotelRoomById(hotelRoomPK);
             hotelRoomsService.delete(room);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while deleting a room from the database", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

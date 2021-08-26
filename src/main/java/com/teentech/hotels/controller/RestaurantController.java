@@ -34,7 +34,8 @@ public class RestaurantController {
         try {
             Reservations reservation = reservationService.getCurrentReservation(hotelId, roomNumber);
             if(reservation == null) {
-                return new ResponseEntity("There is no reservation active", HttpStatus.NO_CONTENT);
+                log.error("There is no reservation active");
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             int reservation_id = reservation.getId();
             Restaurant currentRestaurant = restaurantService.findRestaurantByReservationId(reservation_id);
@@ -42,24 +43,25 @@ public class RestaurantController {
             return new ResponseEntity<RestaurantDto>(currentRestaurantDto, HttpStatus.OK);
         } catch(Exception e) {
             log.error("Error while getting restaurant info", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping
-    public ResponseEntity updateRestaurant(@RequestBody RestaurantDto currentRestaurantDto) {
+    public ResponseEntity<Boolean> updateRestaurant(@RequestBody RestaurantDto currentRestaurantDto) {
         try {
             Reservations reservation = reservationService.getReservationById(currentRestaurantDto.getReservationId());
             if(reservation == null) {
-                return new ResponseEntity("There is no reservation active", HttpStatus.NO_CONTENT);
+                log.error("There is no reservation active");
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             Restaurant currentRestaurant = RestaurantConverter.convertDtoToEntity(currentRestaurantDto);
 
             restaurantService.update(currentRestaurant);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         } catch(Exception e) {
             log.error("Error while updating restaurant", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

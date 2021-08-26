@@ -33,29 +33,30 @@ public class ReservationsController {
                 ReservationDto reservationDto = ReservationDto.builder().hotelId(reservation.getHotelId()).roomNumber(reservation.getRoomNumber()).startDate(reservation.getStartDate()).endDate(reservation.getEndDate()).name(reservation.getName()).passportId(reservation.getPassportId()).email(reservation.getEmail()).phoneNumber(reservation.getPhoneNumber()).breakfast(reservation.getBreakfast()).lunch(reservation.getLunch()).dinner(reservation.getDinner()).build();
                 return new ResponseEntity<ReservationDto>(reservationDto, HttpStatus.OK);
             }
-            return new ResponseEntity("Not found", HttpStatus.NOT_FOUND);
+            log.error("Reservation not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             log.error("Reservation details are incorrect", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping
-    public ResponseEntity addReservation(@RequestBody ReservationDto reservation) {
+    public ResponseEntity<Boolean> addReservation(@RequestBody ReservationDto reservation) {
         try {
             Reservations reservationToSave = ReservationsConverter.convertFromDtoToEntity(reservation);
 
             reservationService.add(reservationToSave);
 
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while adding a reservation in the database", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity deleteReservation(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteReservation(@PathVariable Long id) {
         try {
             Optional<Reservations> reservation = Optional.ofNullable(reservationService.getReservationById(id));
 
@@ -63,22 +64,22 @@ public class ReservationsController {
                 reservationService.delete(reservation.get());
             }
 
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while deleting reservation", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping
-    public ResponseEntity updateReservation(@RequestBody Reservations reservation) {
+    public ResponseEntity<Boolean> updateReservation(@RequestBody Reservations reservation) {
         try {
             reservationService.update(reservation);
 
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while updating reservation", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
