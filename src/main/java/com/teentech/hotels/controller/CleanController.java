@@ -30,7 +30,7 @@ public class CleanController {
             HotelRoomsPK hotelRoomsPK = HotelRoomsPK.builder().hotelId(hotelId).roomNumber(roomNumber).build();
             Clean clean = cleanService.findCleanById(hotelRoomsPK);
             CleanDto cleanDto = CleanConverter.convertFromEntityToDto(clean);
-            return new ResponseEntity<CleanDto>(cleanDto, HttpStatus.OK);
+            return new ResponseEntity<>(cleanDto, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while getting cleaning info", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

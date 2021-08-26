@@ -1,14 +1,12 @@
 package com.teentech.hotels.service;
 
-import com.teentech.hotels.dto.ReservationDto;
 import com.teentech.hotels.model.Reservations;
 import com.teentech.hotels.repository.ReservationsRepository;
-import com.teentech.hotels.util.ReservationsConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservationService {
@@ -37,8 +35,7 @@ public class ReservationService {
 
     public Reservations getCurrentReservation(Long hotelId, Long roomNumber) {
         java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
-        Reservations reservation = reservationRepository.findReservation(hotelId, roomNumber, currentDate);
-        return reservation;
+        return reservationRepository.findReservation(hotelId, roomNumber, currentDate);
     }
 
 }

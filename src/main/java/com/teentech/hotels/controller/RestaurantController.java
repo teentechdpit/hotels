@@ -37,10 +37,10 @@ public class RestaurantController {
                 log.error("There is no reservation active");
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            int reservation_id = reservation.getId();
-            Restaurant currentRestaurant = restaurantService.findRestaurantByReservationId(reservation_id);
+            int reservationId = reservation.getId();
+            Restaurant currentRestaurant = restaurantService.findRestaurantByReservationId(reservationId);
             RestaurantDto currentRestaurantDto = RestaurantConverter.convertFromEntityToDto(currentRestaurant);
-            return new ResponseEntity<RestaurantDto>(currentRestaurantDto, HttpStatus.OK);
+            return new ResponseEntity<>(currentRestaurantDto, HttpStatus.OK);
         } catch(Exception e) {
             log.error("Error while getting restaurant info", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

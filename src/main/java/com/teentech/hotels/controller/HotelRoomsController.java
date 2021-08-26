@@ -51,7 +51,7 @@ public class HotelRoomsController {
                 HotelRoomsDto availableRoomDto = HotelRoomsDto.builder().roomNumber(availableRoom.getRoomNumber()).hotelId(availableRoom.getHotelId()).type(availableRoom.getType()).roomView(availableRoom.getRoomView()).noOfPeople(availableRoom.getNoOfPeople()).build();
                 availableRoomsDto.add(availableRoomDto);
             }
-            return new ResponseEntity<List<HotelRoomsDto>>(availableRoomsDto, HttpStatus.OK);
+            return new ResponseEntity<>(availableRoomsDto, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while getting available rooms", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

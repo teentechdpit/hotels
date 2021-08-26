@@ -18,9 +18,9 @@ public class RestaurantService {
     @Autowired
     private ReservationsRepository reservationsRepository;
 
-    public void add(Restaurant restaurant ) { restaurantRepository.save(restaurant); };
+    public void add(Restaurant restaurant ) { restaurantRepository.save(restaurant); }
 
-    public void update(Restaurant restaurant) { restaurantRepository.save(restaurant); };
+    public void update(Restaurant restaurant) { restaurantRepository.save(restaurant); }
 
     public Restaurant findRestaurantByReservationId(int reservationId) {
         Optional<Restaurant> currentRestaurant = restaurantRepository.findById(reservationId);

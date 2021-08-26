@@ -31,7 +31,7 @@ public class ReservationsController {
 
             if (reservation != null) {
                 ReservationDto reservationDto = ReservationDto.builder().hotelId(reservation.getHotelId()).roomNumber(reservation.getRoomNumber()).startDate(reservation.getStartDate()).endDate(reservation.getEndDate()).name(reservation.getName()).passportId(reservation.getPassportId()).email(reservation.getEmail()).phoneNumber(reservation.getPhoneNumber()).breakfast(reservation.getBreakfast()).lunch(reservation.getLunch()).dinner(reservation.getDinner()).build();
-                return new ResponseEntity<ReservationDto>(reservationDto, HttpStatus.OK);
+                return new ResponseEntity<>(reservationDto, HttpStatus.OK);
             }
             log.error("Reservation not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

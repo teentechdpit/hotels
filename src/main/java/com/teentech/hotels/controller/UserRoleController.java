@@ -27,7 +27,7 @@ public class UserRoleController {
         try {
             List<RoleDto> roles = userRoleService.getAllRoles();
             if (!roles.isEmpty()) {
-                return new ResponseEntity<List<RoleDto>>(roles, HttpStatus.OK);
+                return new ResponseEntity<>(roles, HttpStatus.OK);
             }
             log.error("There are no roles in the DB");
         } catch( Exception e ) {

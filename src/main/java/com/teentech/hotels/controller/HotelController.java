@@ -26,7 +26,7 @@ public class HotelController {
     public ResponseEntity<List<Hotel>> getAllHotels() {
         try {
             log.info("Get all hotels called");
-            return new ResponseEntity<List<Hotel>>(hotelService.getAllHotels(), HttpStatus.OK);
+            return new ResponseEntity<>(hotelService.getAllHotels(), HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while getting all hotels", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -39,7 +39,7 @@ public class HotelController {
             log.info("Get hotel with id {}", id);
             Optional<Hotel> hotel = hotelService.getHotelById(id);
             if (hotel.isPresent()){
-                return new ResponseEntity<Hotel>(hotel.get(), HttpStatus.OK);
+                return new ResponseEntity<>(hotel.get(), HttpStatus.OK);
             } else {
                 log.error("Nothing found");
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);

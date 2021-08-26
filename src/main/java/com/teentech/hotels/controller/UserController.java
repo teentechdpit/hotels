@@ -42,7 +42,7 @@ public class UserController {
         try {
             UserDto authUser = userService.getUserByName(userName, password);
             if (authUser != null) {
-                return new ResponseEntity<UserDto>(authUser, HttpStatus.OK);
+                return new ResponseEntity<>(authUser, HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
