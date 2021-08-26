@@ -39,7 +39,8 @@ public class Reservations implements Serializable {
 
     private String email;
 
-    private String phone;
+    @Column(name = "phone")
+    private String phoneNumber;
 
     private Boolean breakfast;
     private Boolean lunch;

@@ -23,7 +23,7 @@ public class ReservationsConverter {
 
         reservation.setPassportId(reservationDto.getPassportId());
         reservation.setEmail(reservationDto.getEmail());
-        reservation.setPhone(reservationDto.getPhone());
+        reservation.setPhoneNumber(reservationDto.getPhoneNumber());
 
         reservation.setBreakfast(reservationDto.getBreakfast());
         reservation.setLunch(reservationDto.getLunch());
@@ -48,7 +48,7 @@ public class ReservationsConverter {
 
         reservationDto.setPassportId(reservation.getPassportId());
         reservationDto.setEmail(reservation.getEmail());
-        reservationDto.setPhone(reservation.getPhone());
+        reservationDto.setPhoneNumber(reservation.getPhoneNumber());
 
         reservationDto.setBreakfast(reservation.getBreakfast());
         reservationDto.setLunch(reservation.getLunch());

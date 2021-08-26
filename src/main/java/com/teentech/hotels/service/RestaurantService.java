@@ -1,9 +1,6 @@
 package com.teentech.hotels.service;
 
 
-import com.teentech.hotels.model.Clean;
-import com.teentech.hotels.model.HotelRoomsPK;
-import com.teentech.hotels.model.Reservations;
 import com.teentech.hotels.model.Restaurant;
 import com.teentech.hotels.repository.ReservationsRepository;
 import com.teentech.hotels.repository.RestaurantRepository;

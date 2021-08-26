@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -25,10 +27,11 @@ public class ReservationsController {
     @GetMapping
     public ResponseEntity<ReservationDto> getReservation(@RequestParam Long hotelId, @RequestParam Long roomNumber) {
         try {
-            ReservationDto reservation = reservationService.getReservationByHotelIdAndRoomNumber(hotelId, roomNumber);
+            Reservations reservation = reservationService.getCurrentReservation(hotelId, roomNumber);
 
             if (reservation != null) {
-                return new ResponseEntity<ReservationDto>(reservation, HttpStatus.OK);
+                ReservationDto reservationDto = ReservationDto.builder().hotelId(reservation.getHotelId()).roomNumber(reservation.getRoomNumber()).startDate(reservation.getStartDate()).endDate(reservation.getEndDate()).name(reservation.getName()).passportId(reservation.getPassportId()).email(reservation.getEmail()).phoneNumber(reservation.getPhoneNumber()).breakfast(reservation.getBreakfast()).lunch(reservation.getLunch()).dinner(reservation.getDinner()).build();
+                return new ResponseEntity<ReservationDto>(reservationDto, HttpStatus.OK);
             }
             return new ResponseEntity("Not found", HttpStatus.NOT_FOUND);
         } catch (Exception e) {

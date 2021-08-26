@@ -17,7 +17,7 @@ public class Restaurant implements Serializable {
 
     @Id
     @Column(name = "reservation_id")
-    private int reservationId;
+    private Long reservationId;
 
     @Column(name = "last_breakfast_date")
     private Date lastBreakfastDate;
