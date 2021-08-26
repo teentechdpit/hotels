@@ -104,13 +104,13 @@ public class UserController {
     }
 
     @DeleteMapping
-    public ResponseEntity deleteUser(@RequestParam String userName) {
+    public ResponseEntity<Boolean> deleteUser(@RequestParam String userName) {
         try {
             Optional<User> user = Optional.ofNullable(userService.getUserByName(userName));
             if (user.isPresent()) {
                 userService.deleteUser(user.get());
             }
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
 
         } catch (Exception e) {
             log.error("Error while deleting user {} from DB", userName, e);

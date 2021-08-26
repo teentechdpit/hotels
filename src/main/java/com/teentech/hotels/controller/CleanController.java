@@ -33,46 +33,46 @@ public class CleanController {
             return new ResponseEntity<CleanDto>(cleanDto, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while getting cleaning info", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping
-    public ResponseEntity addClean(@RequestBody CleanDto cleanDto) {
+    public ResponseEntity<Boolean> addClean(@RequestBody CleanDto cleanDto) {
         try {
             Clean clean = CleanConverter.convertFromDtoToEntity(cleanDto);
 
             cleanService.add(clean);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while adding new cleaning info into database", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping
-    public ResponseEntity updateClean(@RequestBody CleanDto cleanDto) {
+    public ResponseEntity<Boolean> updateClean(@RequestBody CleanDto cleanDto) {
         try {
             Clean clean = CleanConverter.convertFromDtoToEntity(cleanDto);
 
             cleanService.update(clean);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while updating cleaning info", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
 
     @DeleteMapping
-    public ResponseEntity deleteClean(@RequestBody HotelRoomsPK hotelRoomPK) {
+    public ResponseEntity<Boolean> deleteClean(@RequestBody HotelRoomsPK hotelRoomPK) {
         try {
             Clean clean = cleanService.findCleanById(hotelRoomPK);
             cleanService.delete(clean);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while deleting cleaning info", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
