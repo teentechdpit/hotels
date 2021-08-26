@@ -10,8 +10,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CleanDto implements Serializable
-{
+public class CleanDto implements Serializable {
     private long hotelId;
 
     private long roomNumber;

@@ -5,6 +5,7 @@ import com.teentech.hotels.model.HotelRooms;
 import com.teentech.hotels.model.HotelRoomsPK;
 import com.teentech.hotels.repository.HotelRoomsRepository;
 import com.teentech.hotels.service.HotelRoomsService;
+import com.teentech.hotels.util.HotelRoomsConverter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,12 +29,7 @@ public class HotelRoomsController {
     @PostMapping
     public ResponseEntity addRoom(@RequestBody HotelRoomsDto hotelRoomDto) {
         try {
-            HotelRooms hotelRoom = new HotelRooms();
-            hotelRoom.setRoomNumber(hotelRoomDto.getRoomNumber());
-            hotelRoom.setHotelId(hotelRoomDto.getHotelId());
-            hotelRoom.setType(hotelRoomDto.getType());
-            hotelRoom.setRoomView(hotelRoomDto.getRoomView());
-            hotelRoom.setNoOfPeople(hotelRoomDto.getNoOfPeople());
+            HotelRooms hotelRoom = HotelRoomsConverter.convertFromDtoToEntity(hotelRoomDto);
             hotelRoomsService.add(hotelRoom);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {

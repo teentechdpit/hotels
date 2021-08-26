@@ -4,6 +4,7 @@ package com.teentech.hotels.controller;
 import com.teentech.hotels.dto.ReservationDto;
 import com.teentech.hotels.model.Reservations;
 import com.teentech.hotels.service.ReservationService;
+import com.teentech.hotels.util.ReservationsConverter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,25 +42,7 @@ public class ReservationsController {
     @PostMapping
     public ResponseEntity addReservation(@RequestBody ReservationDto reservation) {
         try {
-            Reservations reservationToSave = new Reservations();
-
-            reservationToSave.setHotelId(reservation.getHotelId());
-
-            reservationToSave.setRoomNumber(reservation.getRoomNumber());
-
-            reservationToSave.setStartDate(reservation.getStartDate());
-            reservationToSave.setEndDate(reservation.getEndDate());
-
-            reservationToSave.setName(reservation.getName());
-            reservationToSave.setSurname(reservation.getSurname());
-
-            reservationToSave.setPassportId(reservation.getPassportId());
-            reservationToSave.setEmail(reservation.getEmail());
-            reservationToSave.setPhoneNumber(reservation.getPhoneNumber());
-
-            reservationToSave.setBreakfast(reservation.getBreakfast());
-            reservationToSave.setLunch(reservation.getLunch());
-            reservationToSave.setDinner(reservation.getDinner());
+            Reservations reservationToSave = ReservationsConverter.convertFromDtoToEntity(reservation);
 
             reservationService.add(reservationToSave);
 

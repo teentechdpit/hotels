@@ -3,6 +3,7 @@ package com.teentech.hotels.service;
 import com.teentech.hotels.dto.UserDto;
 import com.teentech.hotels.model.User;
 import com.teentech.hotels.repository.UserRepository;
+import com.teentech.hotels.util.UserConverter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,15 +34,7 @@ public class UserService {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
         if (user.isPresent() && bCryptPasswordEncoder.matches(password, user.get().getPassword())) {
-            UserDto userDto = new UserDto();
-            userDto.setMail(user.get().getMail());
-            userDto.setUsername(user.get().getUsername());
-            userDto.setRoleName(user.get().getRoles().getName());
-            userDto.setLanguage(user.get().getLanguage());
-            userDto.setHotelId(user.get().getHotelId());
-            List<String> rights = new ArrayList<>();
-            user.get().getRoles().getRights().stream().forEach(r -> rights.add(r.getName()));
-            userDto.setRights(rights);
+            UserDto userDto = UserConverter.convertFromEntityToDto(user.get());
             return userDto;
         }
         return null;

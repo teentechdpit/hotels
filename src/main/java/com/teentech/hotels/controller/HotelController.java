@@ -3,6 +3,7 @@ package com.teentech.hotels.controller;
 import com.teentech.hotels.dto.HotelDto;
 import com.teentech.hotels.model.Hotel;
 import com.teentech.hotels.service.HotelService;
+import com.teentech.hotels.util.HotelConverter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,15 +49,7 @@ public class HotelController {
     @PostMapping
     public ResponseEntity addHotel(@RequestBody HotelDto hotelDto) {
         try {
-            Hotel hotel = new Hotel();
-            hotel.setId(hotelDto.getId());
-            hotel.setName(hotelDto.getName());
-            hotel.setCountry(hotelDto.getCountry());
-            hotel.setCity(hotelDto.getCity());
-            hotel.setStars(hotelDto.getStars());
-            hotel.setMail(hotelDto.getMail());
-            hotel.setPhone(hotelDto.getPhone());
-            hotel.setPaid(hotelDto.isPaid());
+            Hotel hotel = HotelConverter.convertFromDtoToEntity(hotelDto);
             hotelService.add(hotel);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
@@ -68,15 +61,7 @@ public class HotelController {
     @PutMapping
     public ResponseEntity updateHotel(@RequestBody HotelDto hotelDto) {
         try {
-            Hotel hotel = new Hotel();
-            hotel.setId(hotelDto.getId());
-            hotel.setName(hotelDto.getName());
-            hotel.setCountry(hotelDto.getCountry());
-            hotel.setCity(hotelDto.getCity());
-            hotel.setStars(hotelDto.getStars());
-            hotel.setMail(hotelDto.getMail());
-            hotel.setPhone(hotelDto.getPhone());
-            hotel.setPaid(hotelDto.isPaid());
+            Hotel hotel = HotelConverter.convertFromDtoToEntity(hotelDto);
             hotelService.update(hotel);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
