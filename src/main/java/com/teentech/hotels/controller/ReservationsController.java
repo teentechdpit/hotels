@@ -30,7 +30,7 @@ public class ReservationsController {
             Reservations reservation = reservationService.getCurrentReservation(hotelId, roomNumber);
 
             if (reservation != null) {
-                ReservationDto reservationDto = ReservationDto.builder().hotelId(reservation.getHotelId()).roomNumber(reservation.getRoomNumber()).startDate(reservation.getStartDate()).endDate(reservation.getEndDate()).name(reservation.getName()).passportId(reservation.getPassportId()).email(reservation.getEmail()).phoneNumber(reservation.getPhoneNumber()).breakfast(reservation.getBreakfast()).lunch(reservation.getLunch()).dinner(reservation.getDinner()).build();
+                ReservationDto reservationDto = ReservationsConverter.convertFromEntityToDto(reservation);
                 return new ResponseEntity<>(reservationDto, HttpStatus.OK);
             }
             log.error("Reservation not found");
@@ -72,8 +72,10 @@ public class ReservationsController {
     }
 
     @PutMapping
-    public ResponseEntity<Boolean> updateReservation(@RequestBody Reservations reservation) {
+    public ResponseEntity<Boolean> updateReservation(@RequestBody ReservationDto reservationDto) {
         try {
+            Reservations reservation = ReservationsConverter.convertFromDtoToEntity(reservationDto);
+
             reservationService.update(reservation);
 
             return new ResponseEntity<>(true, HttpStatus.OK);

@@ -48,7 +48,7 @@ public class HotelRoomsController {
             }
             List<HotelRoomsDto> availableRoomsDto = new ArrayList<>();
             for (HotelRooms availableRoom : availableRooms) {
-                HotelRoomsDto availableRoomDto = HotelRoomsDto.builder().roomNumber(availableRoom.getRoomNumber()).hotelId(availableRoom.getHotelId()).type(availableRoom.getType()).roomView(availableRoom.getRoomView()).noOfPeople(availableRoom.getNoOfPeople()).build();
+                HotelRoomsDto availableRoomDto = HotelRoomsConverter.convertFromEntityToDto(availableRoom);
                 availableRoomsDto.add(availableRoomDto);
             }
             return new ResponseEntity<>(availableRoomsDto, HttpStatus.OK);
