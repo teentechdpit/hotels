@@ -34,8 +34,7 @@ public class UserService {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
         if (user.isPresent() && bCryptPasswordEncoder.matches(password, user.get().getPassword())) {
-            UserDto userDto = UserConverter.convertFromEntityToDto(user.get());
-            return userDto;
+            return UserConverter.convertFromEntityToDto(user.get());
         }
         return null;
     }
@@ -72,6 +71,7 @@ public class UserService {
         //get Session
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
+                    @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(System.getenv("EMAIL_ADRESS"), System.getenv("EMAIL_PASSWORD"));
                     }
