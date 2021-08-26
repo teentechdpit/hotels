@@ -44,14 +44,14 @@ public class UserController {
             if (authUser != null) {
                 return new ResponseEntity<UserDto>(authUser, HttpStatus.OK);
             }
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping
-    public ResponseEntity addUser(@RequestBody UserDto user) {
+    public ResponseEntity<Boolean> addUser(@RequestBody UserDto user) {
         try {
             UUID uuid = UUID.randomUUID();
             String uuidAsString = uuid.toString();
@@ -62,13 +62,13 @@ public class UserController {
             Registration registration = new Registration(uuidAsString, user.getUsername());
             registrationService.add(registration);
             userService.sendEmailForAuth(user.getMail(), uuidAsString);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (MessagingException e) {
             log.error("Error while sending mail to user", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             log.error("Error while adding user on DB", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
