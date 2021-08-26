@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.Date;
 import java.util.List;
 
-
 @Repository
 public interface HotelRoomsRepository  extends JpaRepository<HotelRooms, HotelRoomsPK> {
 

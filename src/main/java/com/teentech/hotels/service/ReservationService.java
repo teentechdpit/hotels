@@ -3,6 +3,7 @@ package com.teentech.hotels.service;
 import com.teentech.hotels.dto.ReservationDto;
 import com.teentech.hotels.model.Reservations;
 import com.teentech.hotels.repository.ReservationsRepository;
+import com.teentech.hotels.util.ReservationsConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

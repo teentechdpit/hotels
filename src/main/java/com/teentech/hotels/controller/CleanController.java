@@ -6,6 +6,7 @@ import com.teentech.hotels.model.Hotel;
 import com.teentech.hotels.model.HotelRoomsPK;
 import com.teentech.hotels.service.CleanService;
 import com.teentech.hotels.service.HotelService;
+import com.teentech.hotels.util.CleanConverter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class CleanController {
         try {
             HotelRoomsPK hotelRoomsPK = HotelRoomsPK.builder().hotelId(hotelId).roomNumber(roomNumber).build();
             Clean clean = cleanService.findCleanById(hotelRoomsPK);
-            CleanDto cleanDto = CleanDto.builder().hotelId(clean.getHotelId()).roomNumber(clean.getRoomNumber()).lastCleanDay(clean.getLastCleanDay()).lastChangeLingerie(clean.getLastChangeLingerie()).lastChangeTowels(clean.getLastChangeTowels()).build();
+            CleanDto cleanDto = CleanConverter.convertFromEntityToDto(clean);
             return new ResponseEntity<CleanDto>(cleanDto, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while getting cleaning info", e);
@@ -39,12 +40,8 @@ public class CleanController {
     @PostMapping
     public ResponseEntity addClean(@RequestBody CleanDto cleanDto) {
         try {
-            Clean clean = new Clean();
-            clean.setHotelId(cleanDto.getHotelId());
-            clean.setRoomNumber(cleanDto.getRoomNumber());
-            clean.setLastCleanDay(cleanDto.getLastCleanDay());
-            clean.setLastChangeLingerie(cleanDto.getLastChangeLingerie());
-            clean.setLastChangeTowels(cleanDto.getLastChangeTowels());
+            Clean clean = CleanConverter.convertFromDtoToEntity(cleanDto);
+
             cleanService.add(clean);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
@@ -56,12 +53,8 @@ public class CleanController {
     @PutMapping
     public ResponseEntity updateClean(@RequestBody CleanDto cleanDto) {
         try {
-            Clean clean = new Clean();
-            clean.setHotelId(cleanDto.getHotelId());
-            clean.setRoomNumber(cleanDto.getRoomNumber());
-            clean.setLastCleanDay(cleanDto.getLastCleanDay());
-            clean.setLastChangeLingerie(cleanDto.getLastChangeLingerie());
-            clean.setLastChangeTowels(cleanDto.getLastChangeTowels());
+            Clean clean = CleanConverter.convertFromDtoToEntity(cleanDto);
+
             cleanService.update(clean);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {

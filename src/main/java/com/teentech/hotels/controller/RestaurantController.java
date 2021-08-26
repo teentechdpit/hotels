@@ -6,6 +6,7 @@ import com.teentech.hotels.model.Reservations;
 import com.teentech.hotels.model.Restaurant;
 import com.teentech.hotels.service.ReservationService;
 import com.teentech.hotels.service.RestaurantService;
+import com.teentech.hotels.util.RestaurantConverter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ public class RestaurantController {
             }
             int reservation_id = reservation.getId();
             Restaurant currentRestaurant = restaurantService.findRestaurantByReservationId(reservation_id);
-            RestaurantDto currentRestaurantDto = RestaurantDto.builder().reservationId(currentRestaurant.getReservationId()).lastBreakfastDate(currentRestaurant.getLastBreakfastDate()).lastLunchDate(currentRestaurant.getLastLunchDate()).lastDinnerDate(currentRestaurant.getLastDinnerDate()).build();
+            RestaurantDto currentRestaurantDto = RestaurantConverter.convertFromEntityToDto(currentRestaurant);
             return new ResponseEntity<RestaurantDto>(currentRestaurantDto, HttpStatus.OK);
         } catch(Exception e) {
             log.error("Error while getting restaurant info", e);
@@ -52,7 +53,8 @@ public class RestaurantController {
             if(reservation == null) {
                 return new ResponseEntity("There is no reservation active", HttpStatus.NO_CONTENT);
             }
-            Restaurant currentRestaurant = Restaurant.builder().reservationId(currentRestaurantDto.getReservationId()).lastBreakfastDate(currentRestaurantDto.getLastBreakfastDate()).lastLunchDate(currentRestaurantDto.getLastLunchDate()).lastDinnerDate(currentRestaurantDto.getLastDinnerDate()).build();
+            Restaurant currentRestaurant = RestaurantConverter.convertDtoToEntity(currentRestaurantDto);
+
             restaurantService.update(currentRestaurant);
             return new ResponseEntity(HttpStatus.OK);
         } catch(Exception e) {
