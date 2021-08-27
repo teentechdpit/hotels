@@ -11,7 +11,7 @@
     <groupId>com.teentech</groupId>
     <artifactId>hotels</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>hotels</name>
     <description>Hotels</description>
     <properties>
