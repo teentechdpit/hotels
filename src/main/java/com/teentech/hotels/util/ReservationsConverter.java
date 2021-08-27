@@ -29,6 +29,8 @@ public class ReservationsConverter {
         reservation.setLunch(reservationDto.getLunch());
         reservation.setDinner(reservationDto.getDinner());
 
+        reservation.setEverydayCleaning(reservationDto.getEverydayCleaning());
+
         return reservation;
     }
 
@@ -53,6 +55,8 @@ public class ReservationsConverter {
         reservationDto.setBreakfast(reservation.getBreakfast());
         reservationDto.setLunch(reservation.getLunch());
         reservationDto.setDinner(reservation.getDinner());
+
+        reservationDto.setEverydayCleaning(reservation.getEverydayCleaning());
 
         return reservationDto;
     }

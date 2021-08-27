@@ -45,4 +45,7 @@ public class Reservations implements Serializable {
     private Boolean breakfast;
     private Boolean lunch;
     private Boolean dinner;
+
+    @Column(name = "everyday_cleaning")
+    private Boolean everydayCleaning;
 }

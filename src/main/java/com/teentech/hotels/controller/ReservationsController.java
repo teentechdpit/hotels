@@ -2,7 +2,12 @@ package com.teentech.hotels.controller;
 
 
 import com.teentech.hotels.dto.ReservationDto;
+import com.teentech.hotels.model.Bar;
+import com.teentech.hotels.model.HotelRooms;
+import com.teentech.hotels.model.HotelRoomsPK;
 import com.teentech.hotels.model.Reservations;
+import com.teentech.hotels.service.BarService;
+import com.teentech.hotels.service.HotelRoomsService;
 import com.teentech.hotels.service.ReservationService;
 import com.teentech.hotels.util.ReservationsConverter;
 import lombok.extern.log4j.Log4j2;
@@ -12,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +29,12 @@ public class ReservationsController {
 
     @Autowired
     private ReservationService reservationService;
+
+    @Autowired
+    private BarService barService;
+
+    @Autowired
+    private HotelRoomsService hotelRoomsService;
 
     @GetMapping
     public ResponseEntity<ReservationDto> getReservation(@RequestParam Long hotelId, @RequestParam Long roomNumber) {
@@ -45,6 +57,17 @@ public class ReservationsController {
     public ResponseEntity<Boolean> addReservation(@RequestBody ReservationDto reservation) {
         try {
             Reservations reservationToSave = ReservationsConverter.convertFromDtoToEntity(reservation);
+
+            if (!reservationToSave.getEverydayCleaning()) {
+                HotelRoomsPK hotelRoomsPK = new HotelRoomsPK(reservationToSave.getHotelId(), reservationToSave.getRoomNumber());
+                HotelRooms room = hotelRoomsService.findHotelRoomById(hotelRoomsPK);
+
+                int noOfDays = (int) ((reservationToSave.getEndDate().getTime() - reservationToSave.getStartDate().getTime()) / (1000 * 60 * 60 * 24));
+
+                Bar bar = new Bar(reservationToSave.getHotelId(), reservationToSave.getRoomNumber(), room.getNoOfPeople() * (noOfDays - 1));
+
+                barService.add(bar);
+            }
 
             reservationService.add(reservationToSave);
 
