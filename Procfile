@@ -1,0 +1,1 @@
+web: java $JAVA_TOOL_OPTIONS -war target/hotels-0.0.1-SNAPSHOT.war --spring.profiles.active=heroku
