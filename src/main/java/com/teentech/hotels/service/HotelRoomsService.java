@@ -31,8 +31,7 @@ public class HotelRoomsService {
     }
 
     public List<HotelRooms> findAvailableRoom(Long hotelId, String view, Date startDate, Date endDate, int noOfPeople, String roomType) {
-        List<HotelRooms> foundRooms = hotelRoomsRepository.findAvailableHotelRooms(hotelId, view, noOfPeople, roomType, startDate, endDate);
-        return foundRooms;
+        return hotelRoomsRepository.findAvailableHotelRooms(hotelId, view, noOfPeople, roomType, startDate, endDate);
     }
 
 }
