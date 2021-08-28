@@ -19,7 +19,7 @@ public class Reservations implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "hotel_id")
     private Long hotelId;
