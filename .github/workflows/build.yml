@@ -33,9 +33,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          HOTEL_DB_URL: ${{ secrets.HOTEL_DB_URL }}
-          HOTEL_DB_USER: ${{ secrets.HOTEL_DB_USER }}
-          HOTEL_DB_PASSWORD: ${{ secrets.HOTEL_DB_PASSWORD }}
-        run: echo ${SONAR_TOKEN}
-             echo ${HOTEL_DB_URL}
-             mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=teentechdpit_hotels
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=teentechdpit_hotels
