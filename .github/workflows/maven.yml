@@ -2,7 +2,7 @@ name: HotelListe
 on:
   push:
     branches:
-      - master
+      - heroku
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
