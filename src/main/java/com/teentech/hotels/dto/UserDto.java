@@ -20,7 +20,7 @@ public class UserDto implements Serializable {
 
     private String mail;
 
-    private String roleName;
+    private Long roleId;
 
     private List<String> rights;
 

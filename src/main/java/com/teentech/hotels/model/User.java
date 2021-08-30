@@ -30,6 +30,9 @@ public class User implements Serializable {
     @OneToOne
     private UserRole roles;
 
+    @Column(name = "role_id")
+    private Long roleId;
+
     @Column(name = "hotel_id")
     private long hotelId;
 }

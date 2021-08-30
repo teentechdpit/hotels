@@ -12,9 +12,6 @@ import java.util.List;
 @UtilityClass
 public class UserConverter {
 
-    @Autowired
-    private static UserRoleRepository userRoleRepository;
-
     public static User convertFromDtoToEntity(UserDto userDto) {
 
         User user = new User();
@@ -22,7 +19,7 @@ public class UserConverter {
         user.setUsername(userDto.getUsername());
         user.setLanguage(userDto.getLanguage());
         user.setMail(userDto.getMail());
-        user.setRoles(userRoleRepository.findByName(userDto.getRoleName()));
+        user.setRoleId(userDto.getRoleId());
         user.setHotelId(userDto.getHotelId());
 
         return user;
@@ -37,7 +34,7 @@ public class UserConverter {
         userDto.setMail(user.getMail());
         userDto.setHotelId(user.getHotelId());
 
-        userDto.setRoleName(user.getRoles().getName());
+        userDto.setRoleId(user.getRoles().getId());
 
         List<String> rights = new ArrayList<>();
         user.getRoles().getRights().stream().forEach(r -> rights.add(r.getName()));
