@@ -37,10 +37,4 @@ jobs:
           HOTEL_DB_URL: ${{ secrets.HOTEL_DB_URL }}
           HOTEL_DB_USER: ${{ secrets.HOTEL_DB_USER }}
           HOTEL_DB_PASSWORD: ${{ secrets.HOTEL_DB_PASSWORD }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=teentechdpit_hotels
-      - name: Build with Maven
-        env:
-          HOTEL_DB_URL: ${{ secrets.HOTEL_DB_URL }}
-          HOTEL_DB_USER: ${{ secrets.HOTEL_DB_USER }}
-          HOTEL_DB_PASSWORD: ${{ secrets.HOTEL_DB_PASSWORD }}
-        run: mvn --batch-mode --update-snapshots verify
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=teentechdpit_hotels --batch-mode --update-snapshots verify
