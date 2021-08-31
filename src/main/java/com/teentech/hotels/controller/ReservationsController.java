@@ -2,14 +2,8 @@ package com.teentech.hotels.controller;
 
 
 import com.teentech.hotels.dto.ReservationDto;
-import com.teentech.hotels.model.Bar;
-import com.teentech.hotels.model.HotelRooms;
-import com.teentech.hotels.model.HotelRoomsPK;
-import com.teentech.hotels.model.Reservations;
-import com.teentech.hotels.service.BarService;
-import com.teentech.hotels.service.HotelRoomsService;
-import com.teentech.hotels.service.MailService;
-import com.teentech.hotels.service.ReservationService;
+import com.teentech.hotels.model.*;
+import com.teentech.hotels.service.*;
 import com.teentech.hotels.util.ReservationsConverter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +15,9 @@ import javax.mail.BodyPart;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
+import java.io.File;
+import java.sql.Date;
+import java.util.Arrays;
 import java.util.Optional;
 
 @RestController
@@ -37,6 +34,12 @@ public class ReservationsController {
 
     @Autowired
     private HotelRoomsService hotelRoomsService;
+
+    @Autowired
+    private HotelService hotelService;
+
+    @Autowired
+    private DocumentService documentService;
 
     @GetMapping
     public ResponseEntity<ReservationDto> getReservation(@RequestParam Long hotelId, @RequestParam Long roomNumber) {
@@ -60,6 +63,8 @@ public class ReservationsController {
         try {
             Reservations reservationToSave = ReservationsConverter.convertFromDtoToEntity(reservation);
 
+            Optional<Hotel> hotel = hotelService.getHotelById(reservation.getHotelId());
+
             if (!reservationToSave.getEverydayCleaning()) {
                 HotelRoomsPK hotelRoomsPK = new HotelRoomsPK(reservationToSave.getHotelId(), reservationToSave.getRoomNumber());
                 HotelRooms room = hotelRoomsService.findHotelRoomById(hotelRoomsPK);
@@ -82,7 +87,38 @@ public class ReservationsController {
                 Multipart multipart = new MimeMultipart();
                 multipart.addBodyPart(messageBodyPart);
 
-                MailService.send(System.getenv("EMAIL_ADDRESS"), System.getenv("EMAIL_PASSWORD"), reservationToSave.getEmail(), "Drinks status", multipart);
+                MailService.send(System.getenv("EMAIL_ADDRESS"), System.getenv("EMAIL_PASSWORD"), reservationToSave.getEmail(), Arrays.asList(hotel.get().getMail()),"Drinks status", multipart);
+            }
+
+            long millis = System.currentTimeMillis();
+            Date todayDate = new Date(millis); //example: 2021-08-27
+
+            try {
+                documentService.updateTemplateDoc("src\\main\\resources\\templates\\ReservationTemplate.docx",
+                        "src\\main\\resources\\templates\\ReservationOutput.docx", todayDate, reservation, hotel.orElse(null));
+            } catch (Exception e) {
+                log.error("Error at updating reservation template", e);
+            }
+
+            MimeBodyPart textBodyPart = new MimeBodyPart();
+            MimeBodyPart attachmentBodyPart = new MimeBodyPart();
+            Multipart multipart = new MimeMultipart();
+
+            try {
+                textBodyPart.setText("Thank you for making a reservation using Hotelliste! \uD83D\uDE00");
+                attachmentBodyPart.attachFile(new File("src\\main\\resources\\templates\\ReservationOutput.docx"));
+
+                multipart.addBodyPart(textBodyPart);
+                multipart.addBodyPart(attachmentBodyPart);
+            } catch (Exception e) {
+                log.error("Error at creating the body parts of the reservation confirmation email", e);
+            }
+
+            try {
+                MailService.send(System.getenv("EMAIL_ADDRESS"), System.getenv("EMAIL_PASSWORD"),
+                        reservationToSave.getEmail(), Arrays.asList(hotel.get().getMail()), "Reservation Confirmed", multipart);
+            } catch (Exception e) {
+                log.error("Error at sending the reservation confirmation email", e);
             }
 
             reservationService.add(reservationToSave);

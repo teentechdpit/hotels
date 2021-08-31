@@ -1,12 +1,18 @@
 package com.teentech.hotels.service;
 
+import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Service;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.List;
 import java.util.Properties;
 
+@Service
+@Log4j2
 public class MailService {
-    public static void send(String from,String password,String to, String subject, Multipart multipart) throws Exception {
+    public static void send(String from, String password, String to, List<String> cc, String subject, Multipart multipart) throws Exception {
 
         //Get properties object
         Properties props = new Properties();
@@ -27,16 +33,22 @@ public class MailService {
         //compose message
         try {
             MimeMessage message = new MimeMessage(session);
+
             message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
+
+            for (String ccMail: cc) {
+                message.addRecipient(Message.RecipientType.CC, new InternetAddress(ccMail));
+            }
+
             message.setSubject(subject);
 
             message.setContent(multipart);
             //send message
             Transport.send(message);
-            System.out.println("message sent successfully");
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
 
+            log.info("message sent successfully");
+        } catch (MessagingException e) {
+            throw new MessagingException("Error at sending the mail", e);
+        }
     }
 }

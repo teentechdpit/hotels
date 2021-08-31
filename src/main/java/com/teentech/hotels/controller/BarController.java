@@ -18,6 +18,7 @@ import javax.mail.BodyPart;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
+import java.util.Arrays;
 
 @RestController
 @CrossOrigin
@@ -63,7 +64,7 @@ public class BarController {
 
             Reservations reservation = reservationService.getCurrentReservation(bar.getHotelId(), bar.getRoomNumber());
 
-            MailService.send(System.getenv("EMAIL_ADDRESS"), System.getenv("EMAIL_PASSWORD"), reservation.getEmail(), "Drinks status", multipart);
+            MailService.send(System.getenv("EMAIL_ADDRESS"), System.getenv("EMAIL_PASSWORD"), reservation.getEmail(), Arrays.asList(),"Drinks status", multipart);
 
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {
