@@ -58,6 +58,11 @@ public class UserController {
             User userToSave = UserConverter.convertFromDtoToEntity(user);
             userToSave.setPassword("Not_Verified");
 
+            if (userService.getUserByName(userToSave.getUsername()) != null)
+            {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+
             userService.add(userToSave);
             Registration registration = new Registration(uuidAsString, user.getUsername());
             registrationService.add(registration);
