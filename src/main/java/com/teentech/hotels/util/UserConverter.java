@@ -34,10 +34,10 @@ public class UserConverter {
         userDto.setMail(user.getMail());
         userDto.setHotelId(user.getHotelId());
 
-        userDto.setRoleId(user.getRoles().getId());
+        userDto.setRoleId(user.getRole().getId());
 
         List<String> rights = new ArrayList<>();
-        user.getRoles().getRights().stream().forEach(r -> rights.add(r.getName()));
+        user.getRole().getRights().stream().forEach(r -> rights.add(r.getName()));
         userDto.setRights(rights);
 
         return userDto;
