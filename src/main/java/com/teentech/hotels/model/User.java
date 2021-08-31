@@ -27,10 +27,11 @@ public class User implements Serializable {
 
     private String mail;
 
-    @OneToOne
-    private UserRole roles;
+    @OneToOne(optional=false)
+    @JoinColumn( insertable=false, updatable=false)
+    private UserRole role;
 
-    @Column(name = "role_id")
+    @Column(name = "role_id" , nullable=false)
     private Long roleId;
 
     @Column(name = "hotel_id")
