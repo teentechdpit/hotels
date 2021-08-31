@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class DocumentService {
 
-    public void updateTemplateDoc(String input, String output, Date todayDate, ReservationDto reservation, Hotel hotel)
+    public void updateTemplateDoc(String input, String output, ReservationDto reservation, Hotel hotel)
             throws IOException {
 
         try (XWPFDocument doc = new XWPFDocument(Files.newInputStream(Paths.get(input)));) {
@@ -29,7 +29,8 @@ public class DocumentService {
                     String docText = xwpfRun.getText(0);
 
                     if (docText != null) {
-
+                        long millis = System.currentTimeMillis();
+                        Date todayDate = new Date(millis); //example: 2021-08-27
                         docText = docText.replace("${todayDate}", todayDate.toString());
                         xwpfRun.setText(docText, 0);
 

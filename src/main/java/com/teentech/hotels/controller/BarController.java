@@ -1,6 +1,7 @@
 package com.teentech.hotels.controller;
 
 import com.teentech.hotels.dto.BarDto;
+import com.teentech.hotels.dto.EmailDto;
 import com.teentech.hotels.model.Bar;
 import com.teentech.hotels.model.HotelRoomsPK;
 import com.teentech.hotels.model.Reservations;
@@ -32,6 +33,9 @@ public class BarController {
     @Autowired
     private ReservationService reservationService;
 
+    @Autowired
+    private MailService mailService;
+
     @GetMapping
     public ResponseEntity<BarDto> getBarById(@RequestParam long hotelId, @RequestParam long roomNumber) {
         try {
@@ -51,20 +55,16 @@ public class BarController {
             Bar bar = BarConverter.convertFromDtoToEntity(barDto);
             barService.update(bar);
 
+
             String htmlText = "<h1 style=\"text-align:center;  font-family:'FranklinGothicMedium','ArialNarrow',Arial,sans-serif;" +
                     "font-weight:100;font-size:2vw;color:#0e77de;margin-top:3vw;margin-bottom:3vw;\"> &#127867; This is your Drinking Status &#127867;</h1>" +
                     "<p style=\"text-align:center;font-family:'GillSans','GillSansMT',Calibri,'TrebuchetMS',sans-serif;font-size:1vw;\">" +
                     "You have <b>" + bar.getNoOfDrinks() + " more drinks</b> to savor. &#128513;</p>";
 
-            BodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setContent(htmlText, "text/html");
-
-            Multipart multipart = new MimeMultipart();
-            multipart.addBodyPart(messageBodyPart);
-
             Reservations reservation = reservationService.getCurrentReservation(bar.getHotelId(), bar.getRoomNumber());
+            EmailDto emailDto = EmailDto.builder().to(reservation.getEmail()).subject("Drinks status").content(htmlText).build();
 
-            MailService.send(System.getenv("EMAIL_ADDRESS"), System.getenv("EMAIL_PASSWORD"), reservation.getEmail(), Arrays.asList(),"Drinks status", multipart);
+            mailService.send(emailDto);
 
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {

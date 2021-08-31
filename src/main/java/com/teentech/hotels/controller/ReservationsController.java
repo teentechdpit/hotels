@@ -1,6 +1,7 @@
 package com.teentech.hotels.controller;
 
 
+import com.teentech.hotels.dto.EmailDto;
 import com.teentech.hotels.dto.ReservationDto;
 import com.teentech.hotels.model.*;
 import com.teentech.hotels.service.*;
@@ -11,14 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.BodyPart;
-import javax.mail.Multipart;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMultipart;
-import java.io.File;
-import java.sql.Date;
 import java.util.Arrays;
 import java.util.Optional;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 @RestController
 @CrossOrigin
@@ -40,6 +37,9 @@ public class ReservationsController {
 
     @Autowired
     private DocumentService documentService;
+
+    @Autowired
+    private MailService mailService;
 
     @GetMapping
     public ResponseEntity<ReservationDto> getReservation(@RequestParam Long hotelId, @RequestParam Long roomNumber) {
@@ -69,10 +69,11 @@ public class ReservationsController {
                 HotelRoomsPK hotelRoomsPK = new HotelRoomsPK(reservationToSave.getHotelId(), reservationToSave.getRoomNumber());
                 HotelRooms room = hotelRoomsService.findHotelRoomById(hotelRoomsPK);
 
-                int noOfDays = (int) ((reservationToSave.getEndDate().getTime() - reservationToSave.getStartDate().getTime()) / (1000 * 60 * 60 * 24));
-                int noOfDrinks = room.getNoOfPeople() * (noOfDays - 1);
+                long noOfDays =  DAYS.between(reservationToSave.getStartDate().toLocalDate(), reservationToSave.getEndDate().toLocalDate());
+                        //(int) Calendar.((reservationToSave.getEndDate().getTime() - reservationToSave.getStartDate().getTime()) / (1000 * 60 * 60 * 24));
+                long noOfDrinks = room.getNoOfPeople() * (noOfDays - 1);
 
-                Bar bar = new Bar(reservationToSave.getHotelId(), reservationToSave.getRoomNumber(), room.getNoOfPeople() * (noOfDays - 1));
+                Bar bar = new Bar(reservationToSave.getHotelId(), reservationToSave.getRoomNumber(), (int)noOfDrinks);
 
                 barService.add(bar);
 
@@ -81,42 +82,22 @@ public class ReservationsController {
                         "<p style=\"text-align:center;font-family:'GillSans','GillSansMT',Calibri,'TrebuchetMS',sans-serif;font-size:1vw;\">" +
                         "Congratulations for choosing our offer! &#128079; You have no less than <b>" + noOfDrinks + " drinks</b> to savor. &#128523;</p>";
 
-                BodyPart messageBodyPart = new MimeBodyPart();
-                messageBodyPart.setContent(htmlText, "text/html");
-
-                Multipart multipart = new MimeMultipart();
-                multipart.addBodyPart(messageBodyPart);
-
-                MailService.send(System.getenv("EMAIL_ADDRESS"), System.getenv("EMAIL_PASSWORD"), reservationToSave.getEmail(), Arrays.asList(hotel.get().getMail()),"Drinks status", multipart);
+                EmailDto emailDto = EmailDto.builder().to(reservationToSave.getEmail()).subject("Drinks status").content(htmlText).cc(Arrays.asList(hotel.get().getMail())).build();
+                mailService.send(emailDto);
             }
-
-            long millis = System.currentTimeMillis();
-            Date todayDate = new Date(millis); //example: 2021-08-27
 
             try {
                 documentService.updateTemplateDoc("src\\main\\resources\\templates\\ReservationTemplate.docx",
-                        "src\\main\\resources\\templates\\ReservationOutput.docx", todayDate, reservation, hotel.orElse(null));
+                        "src\\main\\resources\\templates\\ReservationOutput.docx", reservation, hotel.orElse(null));
             } catch (Exception e) {
                 log.error("Error at updating reservation template", e);
             }
 
-            MimeBodyPart textBodyPart = new MimeBodyPart();
-            MimeBodyPart attachmentBodyPart = new MimeBodyPart();
-            Multipart multipart = new MimeMultipart();
+
+            EmailDto emailDto = EmailDto.builder().to(reservationToSave.getEmail()).subject("Reservation Confirmed").content("See attachment").cc(Arrays.asList(hotel.get().getMail())).attachmentFile("src\\main\\resources\\templates\\ReservationOutput.docx").build();
 
             try {
-                textBodyPart.setText("Thank you for making a reservation using Hotelliste! \uD83D\uDE00");
-                attachmentBodyPart.attachFile(new File("src\\main\\resources\\templates\\ReservationOutput.docx"));
-
-                multipart.addBodyPart(textBodyPart);
-                multipart.addBodyPart(attachmentBodyPart);
-            } catch (Exception e) {
-                log.error("Error at creating the body parts of the reservation confirmation email", e);
-            }
-
-            try {
-                MailService.send(System.getenv("EMAIL_ADDRESS"), System.getenv("EMAIL_PASSWORD"),
-                        reservationToSave.getEmail(), Arrays.asList(hotel.get().getMail()), "Reservation Confirmed", multipart);
+                mailService.send(emailDto);
             } catch (Exception e) {
                 log.error("Error at sending the reservation confirmation email", e);
             }
@@ -133,14 +114,8 @@ public class ReservationsController {
     @DeleteMapping("{id}")
     public ResponseEntity<Boolean> deleteReservation(@PathVariable Long id) {
         try {
-
-            System.out.println(1);
             Optional<Reservations> reservation = Optional.ofNullable(reservationService.getReservationById(id));
-
-            System.out.println(1);
-
             if (reservation.isPresent()) {
-                System.out.println(reservation.get().getId());
                 reservationService.delete(reservation.get());
             }
 
