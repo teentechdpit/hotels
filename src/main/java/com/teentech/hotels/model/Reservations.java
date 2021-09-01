@@ -19,7 +19,7 @@ public class Reservations implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "hotel_id")
     private Long hotelId;
@@ -45,4 +45,7 @@ public class Reservations implements Serializable {
     private Boolean breakfast;
     private Boolean lunch;
     private Boolean dinner;
+
+    @Column(name = "everyday_cleaning")
+    private Boolean everydayCleaning;
 }

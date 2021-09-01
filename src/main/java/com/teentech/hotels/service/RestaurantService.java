@@ -22,7 +22,7 @@ public class RestaurantService {
 
     public void update(Restaurant restaurant) { restaurantRepository.save(restaurant); }
 
-    public Restaurant findRestaurantByReservationId(int reservationId) {
+    public Restaurant findRestaurantByReservationId(Long reservationId) {
         Optional<Restaurant> currentRestaurant = restaurantRepository.findById(reservationId);
         return currentRestaurant.orElse(null);
     }

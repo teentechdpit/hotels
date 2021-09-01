@@ -1,5 +1,6 @@
 package com.teentech.hotels.service;
 
+import com.teentech.hotels.dto.EmailDto;
 import com.teentech.hotels.dto.UserDto;
 import com.teentech.hotels.model.User;
 import com.teentech.hotels.repository.UserRepository;
@@ -23,6 +24,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private MailService mailService;
 
 
     public List<User> getAllUsers() {
@@ -61,30 +65,11 @@ public class UserService {
     }
 
     public void sendEmailForAuth(String to, String uuid) throws MessagingException {
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
-        props.put("mail.smtp.ssl.checkserveridentity", true);
-        //get Session
-        Session session = Session.getDefaultInstance(props,
-                new javax.mail.Authenticator() {
-                    @Override
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(System.getenv("EMAIL_ADRESS"), System.getenv("EMAIL_PASSWORD"));
-                    }
-                });
-        //compose message
 
-        MimeMessage message = new MimeMessage(session);
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-        message.setSubject("Confirm authentication to HotelListe");
+        EmailDto emailDto = EmailDto.builder().to(to).subject("Confirm authentication to HotelListe").build();
         String applicationHost = System.getenv("APPLICATION_HOST");
         String mailText = "Link for confirm your mail and set the password " + applicationHost + "/users/confirmation/" + uuid;
-        message.setText(mailText);
-        Transport.send(message);
+        mailService.send(emailDto);
         log.info("Email send successfully to address {}", to);
 
     }

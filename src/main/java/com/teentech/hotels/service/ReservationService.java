@@ -29,7 +29,9 @@ public class ReservationService {
     }
 
     public Reservations getReservationById(Long id) {
+        System.out.println(2);
         Optional<Reservations> reservation = reservationRepository.findById(id);
+        System.out.println(2);
         return reservation.orElse(null);
     }
 
