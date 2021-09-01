@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -69,11 +70,10 @@ public class ReservationsController {
                 HotelRoomsPK hotelRoomsPK = new HotelRoomsPK(reservationToSave.getHotelId(), reservationToSave.getRoomNumber());
                 HotelRooms room = hotelRoomsService.findHotelRoomById(hotelRoomsPK);
 
-                long noOfDays =  DAYS.between(reservationToSave.getStartDate().toLocalDate(), reservationToSave.getEndDate().toLocalDate());
-                        //(int) Calendar.((reservationToSave.getEndDate().getTime() - reservationToSave.getStartDate().getTime()) / (1000 * 60 * 60 * 24));
+                long noOfDays = DAYS.between(reservationToSave.getStartDate().toLocalDate(), reservationToSave.getEndDate().toLocalDate());
                 long noOfDrinks = room.getNoOfPeople() * (noOfDays - 1);
 
-                Bar bar = new Bar(reservationToSave.getHotelId(), reservationToSave.getRoomNumber(), (int)noOfDrinks);
+                Bar bar = new Bar(reservationToSave.getHotelId(), reservationToSave.getRoomNumber(), (int) noOfDrinks);
 
                 barService.add(bar);
 
@@ -85,22 +85,12 @@ public class ReservationsController {
                 EmailDto emailDto = EmailDto.builder().to(reservationToSave.getEmail()).subject("Drinks status").content(htmlText).cc(Arrays.asList(hotel.get().getMail())).build();
                 mailService.send(emailDto);
             }
+            ByteArrayOutputStream out = documentService.updateTemplateDoc(reservation, hotel.orElse(null));
 
-            try {
-                documentService.updateTemplateDoc("src\\main\\resources\\templates\\ReservationTemplate.docx",
-                        "src\\main\\resources\\templates\\ReservationOutput.docx", reservation, hotel.orElse(null));
-            } catch (Exception e) {
-                log.error("Error at updating reservation template", e);
-            }
+            EmailDto emailDto = EmailDto.builder().to(reservationToSave.getEmail()).subject("Reservation Confirmed").content("See attachment").cc(Arrays.asList(hotel.get().getMail())).attachmentFile(out).build();
 
 
-            EmailDto emailDto = EmailDto.builder().to(reservationToSave.getEmail()).subject("Reservation Confirmed").content("See attachment").cc(Arrays.asList(hotel.get().getMail())).attachmentFile("src\\main\\resources\\templates\\ReservationOutput.docx").build();
-
-            try {
-                mailService.send(emailDto);
-            } catch (Exception e) {
-                log.error("Error at sending the reservation confirmation email", e);
-            }
+            mailService.send(emailDto);
 
             reservationService.add(reservationToSave);
 
