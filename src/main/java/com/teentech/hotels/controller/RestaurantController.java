@@ -37,7 +37,7 @@ public class RestaurantController {
                 log.error("There is no reservation active");
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            int reservationId = reservation.getId();
+            Long reservationId = reservation.getId();
             Restaurant currentRestaurant = restaurantService.findRestaurantByReservationId(reservationId);
             RestaurantDto currentRestaurantDto = RestaurantConverter.convertFromEntityToDto(currentRestaurant);
             return new ResponseEntity<>(currentRestaurantDto, HttpStatus.OK);
