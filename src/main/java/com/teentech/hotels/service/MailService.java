@@ -30,7 +30,7 @@ public class MailService {
                 new javax.mail.Authenticator() {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(System.getenv("EMAIL_ADRESS"), System.getenv("EMAIL_PASSWORD"));
+                        return new PasswordAuthentication(System.getenv("EMAIL_ADDRESS"), System.getenv("EMAIL_PASSWORD"));
                     }
                 });
 
@@ -40,8 +40,10 @@ public class MailService {
 
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailDto.getTo()));
 
-            for (String ccMail : emailDto.getCc()) {
-                message.addRecipient(Message.RecipientType.CC, new InternetAddress(ccMail));
+            if (emailDto.getCc() != null) {
+                for (String ccMail : emailDto.getCc()) {
+                    message.addRecipient(Message.RecipientType.CC, new InternetAddress(ccMail));
+                }
             }
 
             message.setSubject(emailDto.getSubject());
