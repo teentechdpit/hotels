@@ -3,7 +3,6 @@ package com.teentech.hotels.dto;
 import lombok.*;
 
 import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
 import java.util.List;
 
 @Getter
@@ -11,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class EmailDto implements Serializable {
+public class EmailDto {
 
     private String to;
     private List<String> cc;

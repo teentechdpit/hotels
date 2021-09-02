@@ -10,13 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.util.ArrayList;
+import javax.mail.MessagingException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 
 @Service
 @Log4j2
@@ -66,9 +62,9 @@ public class UserService {
 
     public void sendEmailForAuth(String to, String uuid) throws MessagingException {
 
-        EmailDto emailDto = EmailDto.builder().to(to).subject("Confirm authentication to HotelListe").build();
         String applicationHost = System.getenv("APPLICATION_HOST");
         String mailText = "Link for confirm your mail and set the password " + applicationHost + "/users/confirmation/" + uuid;
+        EmailDto emailDto = EmailDto.builder().to(to).subject("Confirm authentication to HotelListe").content(mailText).build();
         mailService.send(emailDto);
         log.info("Email send successfully to address {}", to);
 

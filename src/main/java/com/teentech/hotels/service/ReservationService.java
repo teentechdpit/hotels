@@ -14,7 +14,9 @@ public class ReservationService {
     @Autowired
     private ReservationsRepository reservationRepository;
 
-    public List<Reservations> getAll() { return reservationRepository.findAll(); }
+    public List<Reservations> getAll() {
+        return reservationRepository.findAll();
+    }
 
     public void add(Reservations reservation) {
         reservationRepository.save(reservation);
@@ -29,9 +31,7 @@ public class ReservationService {
     }
 
     public Reservations getReservationById(Long id) {
-        System.out.println(2);
         Optional<Reservations> reservation = reservationRepository.findById(id);
-        System.out.println(2);
         return reservation.orElse(null);
     }
 
