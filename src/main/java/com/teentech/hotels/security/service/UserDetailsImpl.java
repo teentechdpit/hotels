@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,6 +14,8 @@ import com.teentech.hotels.model.UserRole;
 import com.teentech.hotels.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+@Getter
+@Setter
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
 
@@ -56,24 +60,6 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    public String getLanguage() {
-        return language;
     }
 
     @Override

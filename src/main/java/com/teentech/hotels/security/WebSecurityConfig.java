@@ -19,6 +19,7 @@ import com.teentech.hotels.security.jwt.AuthEntryPointJwt;
 import com.teentech.hotels.security.jwt.AuthTokenFilter;
 import com.teentech.hotels.security.service.UserDetailsServiceImpl;
 
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
