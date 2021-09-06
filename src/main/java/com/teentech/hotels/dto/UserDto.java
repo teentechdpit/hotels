@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.List;
 
 @Getter
@@ -25,4 +26,11 @@ public class UserDto implements Serializable {
     private List<String> rights;
 
     private long hotelId;
+
+    private String accessToken;
+    private String refreshToken;
+
+    private Instant expiryDate;
+
+    private String tokenType = "Bearer";
 }
