@@ -66,33 +66,37 @@ public class ReservationsController {
 
             Optional<Hotel> hotel = hotelService.getHotelById(reservation.getHotelId());
 
-            if (!reservationToSave.getEverydayCleaning()) {
-                HotelRoomsPK hotelRoomsPK = new HotelRoomsPK(reservationToSave.getHotelId(), reservationToSave.getRoomNumber());
-                HotelRooms room = hotelRoomsService.findHotelRoomById(hotelRoomsPK);
+            if (hotel.isPresent()) {
 
-                long noOfDays = DAYS.between(reservationToSave.getStartDate().toLocalDate(), reservationToSave.getEndDate().toLocalDate());
-                long noOfDrinks = room.getNoOfPeople() * (noOfDays - 1);
+                if (!reservationToSave.getEverydayCleaning()) {
+                    HotelRoomsPK hotelRoomsPK = new HotelRoomsPK(reservationToSave.getHotelId(), reservationToSave.getRoomNumber());
+                    HotelRooms room = hotelRoomsService.findHotelRoomById(hotelRoomsPK);
 
-                Bar bar = new Bar(reservationToSave.getHotelId(), reservationToSave.getRoomNumber(), (int) noOfDrinks);
+                    long noOfDays = DAYS.between(reservationToSave.getStartDate().toLocalDate(), reservationToSave.getEndDate().toLocalDate());
+                    long noOfDrinks = room.getNoOfPeople() * (noOfDays - 1);
 
-                barService.add(bar);
+                    Bar bar = new Bar(reservationToSave.getHotelId(), reservationToSave.getRoomNumber(), (int) noOfDrinks);
 
-                String htmlText = "<h1 style=\"text-align:center;  font-family:'FranklinGothicMedium','ArialNarrow',Arial,sans-serif;" +
-                        "font-weight:100;font-size:2vw;color:#0e77de;margin-top:3vw;margin-bottom:3vw;\"> &#127867; This is your Drinking Status &#127867;</h1>" +
-                        "<p style=\"text-align:center;font-family:'GillSans','GillSansMT',Calibri,'TrebuchetMS',sans-serif;font-size:1vw;\">" +
-                        "Congratulations for choosing our offer! &#128079; You have no less than <b>" + noOfDrinks + " drinks</b> to savor. &#128523;</p>";
+                    barService.add(bar);
 
-                EmailDto emailDto = EmailDto.builder().to(reservationToSave.getEmail()).subject("Drinks status").content(htmlText).cc(Arrays.asList(hotel.get().getMail())).build();
+                    String htmlText = "<h1 style=\"text-align:center;  font-family:'FranklinGothicMedium','ArialNarrow',Arial,sans-serif;" +
+                            "font-weight:100;font-size:2vw;color:#0e77de;margin-top:3vw;margin-bottom:3vw;\"> &#127867; This is your Drinking Status &#127867;</h1>" +
+                            "<p style=\"text-align:center;font-family:'GillSans','GillSansMT',Calibri,'TrebuchetMS',sans-serif;font-size:1vw;\">" +
+                            "Congratulations for choosing our offer! &#128079; You have no less than <b>" + noOfDrinks + " drinks</b> to savor. &#128523;</p>";
+
+                    EmailDto emailDto = EmailDto.builder().to(reservationToSave.getEmail()).subject("Drinks status").content(htmlText).cc(Arrays.asList(hotel.get().getMail())).build();
+                    mailService.send(emailDto);
+                }
+                ByteArrayOutputStream out = documentService.updateTemplateDoc(reservation, hotel.orElse(null));
+
+                EmailDto emailDto = EmailDto.builder().to(reservationToSave.getEmail()).subject("Reservation Confirmed").content("See attachment").cc(Arrays.asList(hotel.get().getMail())).attachmentFile(out).build();
+
+
                 mailService.send(emailDto);
+
+                reservationService.add(reservationToSave);
+
             }
-            ByteArrayOutputStream out = documentService.updateTemplateDoc(reservation, hotel.orElse(null));
-
-            EmailDto emailDto = EmailDto.builder().to(reservationToSave.getEmail()).subject("Reservation Confirmed").content("See attachment").cc(Arrays.asList(hotel.get().getMail())).attachmentFile(out).build();
-
-
-            mailService.send(emailDto);
-
-            reservationService.add(reservationToSave);
 
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {
