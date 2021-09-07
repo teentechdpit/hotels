@@ -2,6 +2,7 @@ package com.teentech.hotels.security.service;
 
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
 
@@ -59,7 +60,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
