@@ -23,6 +23,8 @@ public class UserDto implements Serializable {
 
     private Long roleId;
 
+    private String roleName;
+
     private List<String> rights;
 
     private long hotelId;

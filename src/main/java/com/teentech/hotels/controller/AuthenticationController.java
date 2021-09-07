@@ -4,7 +4,6 @@ package com.teentech.hotels.controller;
 import com.teentech.hotels.dto.UserDto;
 import com.teentech.hotels.model.RefreshToken;
 import com.teentech.hotels.model.UserRights;
-import com.teentech.hotels.model.UserRole;
 import com.teentech.hotels.payload.request.LoginRequest;
 import com.teentech.hotels.security.jwt.JwtUtils;
 import com.teentech.hotels.security.service.UserDetailsImpl;
@@ -24,10 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-
-import static java.util.stream.Collectors.toCollection;
 
 @Log4j2
 @RestController
@@ -56,14 +51,14 @@ public class AuthenticationController {
 
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUsername());
 
-        ArrayList<String> roleNames = new ArrayList<>();
+        ArrayList<String> rightsNames = new ArrayList<>();
         for (UserRights userRight: userDetails.getUserRole().getRights()) {
-            roleNames.add(userRight.getName());
+            rightsNames.add(userRight.getName());
         }
 
         try {
             return ResponseEntity.ok(new UserDto(userDetails.getUsername(), userDetails.getLanguage(), userDetails.getMail(),
-                    userDetails.getRoleId(), roleNames, userDetails.getHotelId(), jwt, refreshToken.getToken(), refreshToken.getExpiryDate(), null));
+                    userDetails.getRoleId(), userDetails.getUserRole().getName(), rightsNames, userDetails.getHotelId(), jwt, refreshToken.getToken(), refreshToken.getExpiryDate(), "Bearer"));
         } catch (Exception e) {
             log.error("Error while creating token", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
