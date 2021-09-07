@@ -22,7 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RestController
@@ -42,19 +43,12 @@ public class AuthenticationController {
     public ResponseEntity<UserDto> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUsername());
-
-        ArrayList<String> rightsNames = new ArrayList<>();
-        for (UserRights userRight: userDetails.getUserRole().getRights()) {
-            rightsNames.add(userRight.getName());
-        }
+        List<String> rightsNames = userDetails.getUserRole().getRights().stream().map(UserRights::getName).collect(Collectors.toList());
 
         try {
             return ResponseEntity.ok(new UserDto(userDetails.getUsername(), userDetails.getLanguage(), userDetails.getMail(),

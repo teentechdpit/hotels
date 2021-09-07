@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.teentech.hotels.security.RefreshTokenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,6 @@ public class RefreshTokenService {
 
     public RefreshToken createRefreshToken(String username) {
         RefreshToken refreshToken = new RefreshToken();
-
         refreshToken.setUsername(username);
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshToken.setToken(UUID.randomUUID().toString());
@@ -41,10 +41,10 @@ public class RefreshTokenService {
         return refreshToken;
     }
 
-    public RefreshToken verifyExpiration(RefreshToken token) throws Exception {
+    public RefreshToken verifyExpiration(RefreshToken token) throws RefreshTokenException {
         if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
             refreshTokenRepository.delete(token);
-            throw new Exception(String.format("Refresh token %s was expired. Please make a new sign-in request!", token.getToken()));
+            throw new RefreshTokenException(String.format("Refresh token %s was expired. Please make a new sign-in request!", token.getToken()));
         }
 
         return token;
