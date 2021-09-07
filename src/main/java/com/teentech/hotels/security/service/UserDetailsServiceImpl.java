@@ -22,6 +22,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Optional<User> user = Optional.ofNullable(Optional.of(userRepository.findByUsername(username))
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username)));
 
-        return UserDetailsImpl.build(user.orElse(null));
+        return UserDetailsImpl.build(user.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username)));
     }
 }
