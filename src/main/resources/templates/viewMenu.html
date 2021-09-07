@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Restaurant menu</title>
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<style>
+h1 {
+    font-size: 60px;
+}
+
+.header {
+    text-align: center;
+    color: #0e77de;
+}
+
+table {
+    width: 500px;
+    border-collapse:separate; 
+    border-spacing:1.5em;
+    margin: 0 auto;
+}
+
+td {
+    text-align: center;
+}
+
+.columnTitle {
+    font-size: 25px;
+}
+
+tr {
+    color: #0e77de;
+    font-size: 20px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #34eb8f;
+    font-size: 32px;
+}
+</style>
+<script>
+</script>
+<div class="header">
+    <h1>Menu</h1>
+</div>
+<div class="footer">
+    <div class="tableContainer" th:each="entryType : ${entryTypes}">
+        <p class="subtitle" th:text="${entryType}"></p>
+        <table>
+            <thead>
+                <tr>
+                    <th class="columnTitle">Name</th>
+                    <th class="columnTitle">Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${menuItems}" th:if="${item.entryType} == ${entryType}">
+                    <td th:text="${item.nameOfEntry}"></td>
+                    <td th:text="${item.price + ' ' + item.currency}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

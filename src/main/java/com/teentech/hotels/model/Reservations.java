@@ -48,4 +48,13 @@ public class Reservations implements Serializable {
 
     @Column(name = "everyday_cleaning")
     private Boolean everydayCleaning;
+
+    private Long checkout;
+
+    private String currency;
+
+    @Column(name = "checkout_completed")
+    private Boolean checkoutCompleted;
+
+
 }

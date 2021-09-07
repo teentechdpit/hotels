@@ -1,26 +1,35 @@
 package com.teentech.hotels.service;
 
 
-import com.teentech.hotels.dto.ReservationDto;
+import com.teentech.hotels.dto.ReservationSignatureDto;
 import com.teentech.hotels.model.Hotel;
+import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Date;
+import java.util.Base64;
 import java.util.List;
 
 @Service
 public class DocumentService {
 
-    public ByteArrayOutputStream updateTemplateDoc(ReservationDto reservation, Hotel hotel)
-            throws IOException {
+    public ByteArrayOutputStream updateTemplateDoc(ReservationSignatureDto reservation, Hotel hotel)
+            throws IOException, org.apache.poi.openxml4j.exceptions.InvalidFormatException {
+        String sourceData = reservation.getSignature();
+
+        String[] parts = sourceData.split(",");
+        String imageString = parts[1];
+
+        byte[] imageByte;
+
+        imageByte = Base64.getDecoder().decode(imageString);
+        InputStream is = new ByteArrayInputStream(imageByte);
+
         File file = new ClassPathResource("\\templates\\ReservationTemplate.docx").getFile();
         try (XWPFDocument doc = new XWPFDocument(new FileInputStream(file))) {
             List<XWPFParagraph> xwpfParagraphList = doc.getParagraphs();
@@ -45,6 +54,10 @@ public class DocumentService {
                     }
                 }
             }
+
+            XWPFParagraph paragraph = doc.createParagraph();
+            XWPFRun run = paragraph.createRun();
+            run.addPicture(is, XWPFDocument.PICTURE_TYPE_PNG, "new", Units.toEMU(72*6), Units.toEMU(72*6/26*9));
 
             try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
                 doc.write(out);
