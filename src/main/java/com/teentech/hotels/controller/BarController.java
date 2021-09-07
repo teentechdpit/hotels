@@ -41,6 +41,9 @@ public class BarController {
         try {
             HotelRoomsPK hotelRoomsPK = HotelRoomsPK.builder().hotelId(hotelId).roomNumber(roomNumber).build();
             Bar bar = barService.findBarById(hotelRoomsPK);
+            if (bar == null) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
             BarDto barDto = BarConverter.convertFromEntityToDto(bar);
             return new ResponseEntity<>(barDto, HttpStatus.OK);
         } catch (Exception e) {

@@ -33,4 +33,10 @@ public class ReservationDto implements Serializable {
     private Boolean dinner;
 
     private Boolean everydayCleaning;
+
+    private Long checkout;
+
+    private String currency;
+
+    private Boolean checkoutCompleted;
 }
