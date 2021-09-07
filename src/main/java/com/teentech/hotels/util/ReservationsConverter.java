@@ -1,6 +1,7 @@
 package com.teentech.hotels.util;
 
 import com.teentech.hotels.dto.ReservationDto;
+import com.teentech.hotels.dto.ReservationSignatureDto;
 import com.teentech.hotels.model.Reservations;
 import lombok.experimental.UtilityClass;
 
@@ -31,6 +32,12 @@ public class ReservationsConverter {
 
         reservation.setEverydayCleaning(reservationDto.getEverydayCleaning());
 
+        reservation.setCheckout(reservationDto.getCheckout());
+
+        reservation.setCurrency(reservationDto.getCurrency());
+
+        reservation.setCheckoutCompleted(reservationDto.getCheckoutCompleted());
+
         return reservation;
     }
 
@@ -58,6 +65,42 @@ public class ReservationsConverter {
 
         reservationDto.setEverydayCleaning(reservation.getEverydayCleaning());
 
+        reservationDto.setCheckout(reservation.getCheckout());
+
+        reservationDto.setCurrency(reservation.getCurrency());
+
+        reservationDto.setCheckoutCompleted(reservation.getCheckoutCompleted());
+
         return reservationDto;
+    }
+
+    public static Reservations convertFromSignatureToNormal (ReservationSignatureDto reservationSignatureDto) {
+        Reservations reservation = new Reservations();
+
+        reservation.setHotelId(reservationSignatureDto.getHotelId());
+
+        reservation.setRoomNumber(reservationSignatureDto.getRoomNumber());
+
+        reservation.setStartDate(reservationSignatureDto.getStartDate());
+        reservation.setEndDate(reservationSignatureDto.getEndDate());
+
+        reservation.setName(reservationSignatureDto.getName());
+        reservation.setSurname(reservationSignatureDto.getSurname());
+
+        reservation.setPassportId(reservationSignatureDto.getPassportId());
+        reservation.setEmail(reservationSignatureDto.getEmail());
+        reservation.setPhoneNumber(reservationSignatureDto.getPhoneNumber());
+
+        reservation.setBreakfast(reservationSignatureDto.getBreakfast());
+        reservation.setLunch(reservationSignatureDto.getLunch());
+        reservation.setDinner(reservationSignatureDto.getDinner());
+
+        reservation.setEverydayCleaning(reservationSignatureDto.getEverydayCleaning());
+
+        reservation.setCheckout(reservationSignatureDto.getCheckout());
+
+        reservation.setCurrency(reservationSignatureDto.getCurrency());
+
+        return reservation;
     }
 }
