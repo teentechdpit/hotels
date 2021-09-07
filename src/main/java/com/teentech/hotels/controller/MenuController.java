@@ -5,6 +5,7 @@ import com.teentech.hotels.model.MenuItem;
 import com.teentech.hotels.service.ItemTypeService;
 import com.teentech.hotels.service.MenuService;
 import com.teentech.hotels.util.MenuItemConverter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/menu")
 @Log4j2
+@SecurityRequirement(name = "bearerAuth")
 public class MenuController {
 
     @Autowired

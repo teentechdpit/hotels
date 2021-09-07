@@ -4,6 +4,7 @@ import com.teentech.hotels.dto.ItemTypeDto;
 import com.teentech.hotels.model.ItemType;
 import com.teentech.hotels.service.ItemTypeService;
 import com.teentech.hotels.util.ItemTypeConverter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @RequestMapping("/menu/type")
 @Log4j2
+@SecurityRequirement(name = "bearerAuth")
 public class ItemTypeController {
 
     @Autowired

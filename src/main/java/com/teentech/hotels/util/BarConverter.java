@@ -1,9 +1,7 @@
 package com.teentech.hotels.util;
 
 import com.teentech.hotels.dto.BarDto;
-import com.teentech.hotels.dto.CleanDto;
 import com.teentech.hotels.model.Bar;
-import com.teentech.hotels.model.Clean;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

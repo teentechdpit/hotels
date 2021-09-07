@@ -2,6 +2,7 @@ package com.teentech.hotels.controller;
 
 import com.teentech.hotels.dto.RoleDto;
 import com.teentech.hotels.service.UserRoleService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/roles")
 @Log4j2
+@SecurityRequirement(name = "bearerAuth")
 public class UserRoleController {
 
     @Autowired

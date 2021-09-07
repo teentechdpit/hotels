@@ -13,29 +13,20 @@ public class ReservationsConverter {
         Reservations reservation = new Reservations();
 
         reservation.setHotelId(reservationDto.getHotelId());
-
         reservation.setRoomNumber(reservationDto.getRoomNumber());
-
         reservation.setStartDate(reservationDto.getStartDate());
         reservation.setEndDate(reservationDto.getEndDate());
-
         reservation.setName(reservationDto.getName());
         reservation.setSurname(reservationDto.getSurname());
-
         reservation.setPassportId(reservationDto.getPassportId());
         reservation.setEmail(reservationDto.getEmail());
         reservation.setPhoneNumber(reservationDto.getPhoneNumber());
-
         reservation.setBreakfast(reservationDto.getBreakfast());
         reservation.setLunch(reservationDto.getLunch());
         reservation.setDinner(reservationDto.getDinner());
-
         reservation.setEverydayCleaning(reservationDto.getEverydayCleaning());
-
         reservation.setCheckout(reservationDto.getCheckout());
-
         reservation.setCurrency(reservationDto.getCurrency());
-
         reservation.setCheckoutCompleted(reservationDto.getCheckoutCompleted());
 
         return reservation;
@@ -78,27 +69,19 @@ public class ReservationsConverter {
         Reservations reservation = new Reservations();
 
         reservation.setHotelId(reservationSignatureDto.getHotelId());
-
         reservation.setRoomNumber(reservationSignatureDto.getRoomNumber());
-
         reservation.setStartDate(reservationSignatureDto.getStartDate());
         reservation.setEndDate(reservationSignatureDto.getEndDate());
-
         reservation.setName(reservationSignatureDto.getName());
         reservation.setSurname(reservationSignatureDto.getSurname());
-
         reservation.setPassportId(reservationSignatureDto.getPassportId());
         reservation.setEmail(reservationSignatureDto.getEmail());
         reservation.setPhoneNumber(reservationSignatureDto.getPhoneNumber());
-
         reservation.setBreakfast(reservationSignatureDto.getBreakfast());
         reservation.setLunch(reservationSignatureDto.getLunch());
         reservation.setDinner(reservationSignatureDto.getDinner());
-
         reservation.setEverydayCleaning(reservationSignatureDto.getEverydayCleaning());
-
         reservation.setCheckout(reservationSignatureDto.getCheckout());
-
         reservation.setCurrency(reservationSignatureDto.getCurrency());
 
         return reservation;

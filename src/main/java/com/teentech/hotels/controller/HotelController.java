@@ -4,6 +4,7 @@ import com.teentech.hotels.dto.HotelDto;
 import com.teentech.hotels.model.Hotel;
 import com.teentech.hotels.service.HotelService;
 import com.teentech.hotels.util.HotelConverter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @CrossOrigin
 @RequestMapping("/hotels")
 @Log4j2
+@SecurityRequirement(name = "bearerAuth")
 public class HotelController {
 
     @Autowired

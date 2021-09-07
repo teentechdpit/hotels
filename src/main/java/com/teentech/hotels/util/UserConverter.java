@@ -2,9 +2,7 @@ package com.teentech.hotels.util;
 
 import com.teentech.hotels.dto.UserDto;
 import com.teentech.hotels.model.User;
-import com.teentech.hotels.repository.UserRoleRepository;
 import lombok.experimental.UtilityClass;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;

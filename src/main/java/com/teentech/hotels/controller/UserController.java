@@ -8,6 +8,8 @@ import com.teentech.hotels.repository.UserRoleRepository;
 import com.teentech.hotels.service.RegistrationService;
 import com.teentech.hotels.service.UserService;
 import com.teentech.hotels.util.UserConverter;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,6 +53,7 @@ public class UserController {
     }
 
     @PostMapping
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Boolean> addUser(@RequestBody UserDto user) {
         try {
             UUID uuid = UUID.randomUUID();
@@ -109,6 +112,7 @@ public class UserController {
     }
 
     @DeleteMapping
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Boolean> deleteUser(@RequestParam String userName) {
         try {
             Optional<User> user = Optional.ofNullable(userService.getUserByName(userName));
@@ -126,6 +130,7 @@ public class UserController {
 
 
     @PutMapping
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Boolean> updateUser(@RequestBody UserDto userDto) {
         try {
             User user = UserConverter.convertFromDtoToEntity(userDto);

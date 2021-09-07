@@ -7,6 +7,7 @@ import com.teentech.hotels.model.Restaurant;
 import com.teentech.hotels.service.ReservationService;
 import com.teentech.hotels.service.RestaurantService;
 import com.teentech.hotels.util.RestaurantConverter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/restaurant")
 @Log4j2
+@SecurityRequirement(name = "bearerAuth")
 public class RestaurantController {
 
     @Autowired

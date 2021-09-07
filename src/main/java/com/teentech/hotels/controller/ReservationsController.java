@@ -7,6 +7,7 @@ import com.teentech.hotels.dto.ReservationSignatureDto;
 import com.teentech.hotels.model.*;
 import com.teentech.hotels.service.*;
 import com.teentech.hotels.util.ReservationsConverter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @CrossOrigin
 @RequestMapping("/reservations")
 @Log4j2
+@SecurityRequirement(name = "bearerAuth")
 public class ReservationsController {
 
     @Autowired

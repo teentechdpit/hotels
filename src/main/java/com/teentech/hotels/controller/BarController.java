@@ -9,6 +9,8 @@ import com.teentech.hotels.service.BarService;
 import com.teentech.hotels.service.MailService;
 import com.teentech.hotels.service.ReservationService;
 import com.teentech.hotels.util.BarConverter;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,7 @@ import java.util.Arrays;
 @CrossOrigin
 @RequestMapping("/bar")
 @Log4j2
+@SecurityRequirement(name = "bearerAuth")
 public class BarController {
 
     @Autowired
