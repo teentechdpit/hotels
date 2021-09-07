@@ -78,9 +78,12 @@ public class ReservationsController {
         }
     }
 
-    @PostMapping("/checkout")
-    public ResponseEntity<Boolean> checkout(@RequestParam Long hotelId, @RequestParam Long roomNumber) {
+    @PutMapping("/checkout")
+    public ResponseEntity<Boolean> checkout(@RequestBody HotelRoomsPK hotelRoomsPK) {
         try {
+            Long hotelId = hotelRoomsPK.getHotelId();
+            Long roomNumber = hotelRoomsPK.getRoomNumber();
+
             Reservations reservation = reservationService.getCurrentReservation(hotelId, roomNumber);
 
             if(reservation == null) {
