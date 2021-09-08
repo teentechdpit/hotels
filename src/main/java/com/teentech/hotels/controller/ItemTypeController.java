@@ -28,10 +28,10 @@ public class ItemTypeController {
 
             itemTypeService.add(itemType);
 
-            return new ResponseEntity<Boolean>(Boolean.TRUE, HttpStatus.OK);
+            return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while adding item type to DB", e);
-            return new ResponseEntity<Boolean>(Boolean.FALSE, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(Boolean.FALSE, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

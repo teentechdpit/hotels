@@ -3,7 +3,6 @@ package com.teentech.hotels.service;
 
 import com.teentech.hotels.dto.ReservationSignatureDto;
 import com.teentech.hotels.model.Hotel;
-import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.Document;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;

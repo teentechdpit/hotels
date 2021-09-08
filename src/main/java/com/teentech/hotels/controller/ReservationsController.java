@@ -68,12 +68,12 @@ public class ReservationsController {
             Reservations reservation = reservationService.getCurrentReservation(hotelId, roomNumber);
 
             if(reservation == null) {
-                log.error("Reservation not found");
+                log.error("Reservation not found on get by id for room number {}", roomNumber);
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
             Long id = reservation.getId();
-            return new ResponseEntity<Long>(id, HttpStatus.OK);
+            return new ResponseEntity<>(id, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while getting reservation from db", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -89,7 +89,7 @@ public class ReservationsController {
             Reservations reservation = reservationService.getCurrentReservation(hotelId, roomNumber);
 
             if(reservation == null) {
-                log.error("Reservation not found");
+                log.error("Reservation not found for checkout for room {}", roomNumber );
                 return new ResponseEntity<>(Boolean.FALSE, HttpStatus.NO_CONTENT);
             }
 
@@ -116,8 +116,11 @@ public class ReservationsController {
             reservationToSave.setCheckoutCompleted(false);
 
             Optional<Hotel> hotel = hotelService.getHotelById(reservation.getHotelId());
+            if(!hotel.isPresent()) {
+                return new ResponseEntity<>(Boolean.FALSE, HttpStatus.NO_CONTENT);
+            }
 
-            if (!reservationToSave.getEverydayCleaning()) {
+            if (Boolean.FALSE.equals(reservationToSave.getEverydayCleaning())) {
                 HotelRoomsPK hotelRoomsPK = new HotelRoomsPK(reservationToSave.getHotelId(), reservationToSave.getRoomNumber());
                 HotelRooms room = hotelRoomsService.findHotelRoomById(hotelRoomsPK);
 
@@ -135,10 +138,6 @@ public class ReservationsController {
 
                 EmailDto emailDto = EmailDto.builder().to(reservationToSave.getEmail()).subject("Drinks status").content(htmlText).cc(Arrays.asList(hotel.get().getMail())).build();
                 mailService.send(emailDto);
-            }
-
-            if(!hotel.isPresent()) {
-                return new ResponseEntity<>(Boolean.FALSE, HttpStatus.NO_CONTENT);
             }
 
             ByteArrayOutputStream out = documentService.updateTemplateDoc(reservation, hotel.orElse(null));
