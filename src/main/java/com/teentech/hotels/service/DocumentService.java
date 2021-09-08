@@ -4,6 +4,7 @@ package com.teentech.hotels.service;
 import com.teentech.hotels.dto.ReservationSignatureDto;
 import com.teentech.hotels.model.Hotel;
 import org.apache.poi.util.Units;
+import org.apache.poi.xwpf.usermodel.Document;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -17,6 +18,10 @@ import java.util.List;
 
 @Service
 public class DocumentService {
+
+    private static final int WIDTH = 432;
+
+    private static final int HEIGHT = 20;
 
     public ByteArrayOutputStream updateTemplateDoc(ReservationSignatureDto reservation, Hotel hotel)
             throws IOException, org.apache.poi.openxml4j.exceptions.InvalidFormatException {
@@ -57,7 +62,7 @@ public class DocumentService {
 
             XWPFParagraph paragraph = doc.createParagraph();
             XWPFRun run = paragraph.createRun();
-            run.addPicture(is, XWPFDocument.PICTURE_TYPE_PNG, "new", Units.toEMU(72*6), Units.toEMU(72*6/26*9));
+            run.addPicture(is, Document.PICTURE_TYPE_PNG, "", WIDTH, HEIGHT);
 
             try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
                 doc.write(out);
