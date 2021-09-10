@@ -41,6 +41,10 @@ public class RestaurantController {
             }
             Long reservationId = reservation.getId();
             Restaurant currentRestaurant = restaurantService.findRestaurantByReservationId(reservationId);
+            if(currentRestaurant == null) {
+                log.error("No info found for this reservation");
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
             RestaurantDto currentRestaurantDto = RestaurantConverter.convertFromEntityToDto(currentRestaurant);
             return new ResponseEntity<>(currentRestaurantDto, HttpStatus.OK);
         } catch(Exception e) {
