@@ -1,5 +1,6 @@
 package com.teentech.hotels.controller;
 
+import com.teentech.hotels.dto.SimpleUserDto;
 import com.teentech.hotels.dto.UserDto;
 import com.teentech.hotels.model.Registration;
 import com.teentech.hotels.model.User;
@@ -54,11 +55,11 @@ public class UserController {
 
     @PostMapping
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<Boolean> addUser(@RequestBody UserDto user) {
+    public ResponseEntity<Boolean> addUser(@RequestBody SimpleUserDto user) {
         try {
             UUID uuid = UUID.randomUUID();
             String uuidAsString = uuid.toString();
-            User userToSave = UserConverter.convertFromDtoToEntity(user);
+            User userToSave = UserConverter.convertFromSimpleDtoToEntity(user);
             userToSave.setPassword("Not_Verified");
 
             if (userService.getUserByName(userToSave.getUsername()) != null)

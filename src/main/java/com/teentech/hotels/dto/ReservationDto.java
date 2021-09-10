@@ -22,7 +22,7 @@ public class ReservationDto implements Serializable {
     private String name;
     private String surname;
 
-    private Long passportId;
+    private String passportId;
 
     private String email;
 

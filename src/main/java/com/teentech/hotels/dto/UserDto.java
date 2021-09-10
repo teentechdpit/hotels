@@ -1,9 +1,7 @@
 package com.teentech.hotels.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import javassist.Loader;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -13,26 +11,24 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto implements Serializable {
-
-    private String username;
-
-    private String language;
-
-    private String mail;
-
-    private Long roleId;
+@Builder
+public class UserDto extends SimpleUserDto {
 
     private String roleName;
-
     private List<String> rights;
-
-    private long hotelId;
 
     private String accessToken;
     private String refreshToken;
-
     private Instant expiryDate;
-
     private String tokenType = "Bearer";
+
+    @Builder
+    public UserDto(String username, String language, String mail, Long roleId, Long hotelId, String roleName, List<String> rights, String accessToken, String refreshToken, Instant expiryDate, String tokenType) {
+        super(username, language, mail, roleId, hotelId);
+        this.roleName = roleName;
+        this.rights = rights;
+        this.accessToken = accessToken;
+        this.expiryDate = expiryDate;
+        this.tokenType = tokenType;
+    }
 }

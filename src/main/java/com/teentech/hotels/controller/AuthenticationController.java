@@ -51,8 +51,7 @@ public class AuthenticationController {
         List<String> rightsNames = userDetails.getUserRole().getRights().stream().map(UserRights::getName).collect(Collectors.toList());
 
         try {
-            return ResponseEntity.ok(new UserDto(userDetails.getUsername(), userDetails.getLanguage(), userDetails.getMail(),
-                    userDetails.getRoleId(), userDetails.getUserRole().getName(), rightsNames, userDetails.getHotelId(), jwt, refreshToken.getToken(), refreshToken.getExpiryDate(), "Bearer"));
+            return ResponseEntity.ok(new UserDto(userDetails.getUsername(), userDetails.getLanguage(), userDetails.getMail(), userDetails.getRoleId(), userDetails.getHotelId(), userDetails.getUserRole().getName(), rightsNames, jwt, refreshToken.getToken(), refreshToken.getExpiryDate(), "Bearer"));
         } catch (Exception e) {
             log.error("Error while creating token", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

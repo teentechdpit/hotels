@@ -1,5 +1,6 @@
 package com.teentech.hotels.util;
 
+import com.teentech.hotels.dto.SimpleUserDto;
 import com.teentech.hotels.dto.UserDto;
 import com.teentech.hotels.model.User;
 import lombok.experimental.UtilityClass;
@@ -39,6 +40,18 @@ public class UserConverter {
         userDto.setRights(rights);
 
         return userDto;
+    }
+
+    public static User convertFromSimpleDtoToEntity(SimpleUserDto simpleUserDto) {
+        User user = new User();
+
+        user.setUsername(simpleUserDto.getUsername());
+        user.setLanguage(simpleUserDto.getLanguage());
+        user.setMail(simpleUserDto.getMail());
+        user.setRoleId(simpleUserDto.getRoleId());
+        user.setHotelId(simpleUserDto.getHotelId());
+
+        return user;
     }
 
 }

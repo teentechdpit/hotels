@@ -35,7 +35,7 @@ public class Reservations implements Serializable {
 
     private String surname;
 
-    private Long passportId;
+    private String passportId;
 
     private String email;
 

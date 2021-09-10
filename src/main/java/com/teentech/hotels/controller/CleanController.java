@@ -31,6 +31,10 @@ public class CleanController {
         try {
             HotelRoomsPK hotelRoomsPK = HotelRoomsPK.builder().hotelId(hotelId).roomNumber(roomNumber).build();
             Clean clean = cleanService.findCleanById(hotelRoomsPK);
+            if (clean == null) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            System.out.println(clean);
             CleanDto cleanDto = CleanConverter.convertFromEntityToDto(clean);
             return new ResponseEntity<>(cleanDto, HttpStatus.OK);
         } catch (Exception e) {

@@ -42,7 +42,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/api/auth/**",
-            "/public/menu/**"
+            "/public/menu/**",
+            "/users/confirmation/**"
     };
 
     @Bean

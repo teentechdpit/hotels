@@ -32,6 +32,10 @@ public class HotelRoomsController {
     public ResponseEntity<Boolean> addRoom(@RequestBody HotelRoomsDto hotelRoomDto) {
         try {
             HotelRooms hotelRoom = HotelRoomsConverter.convertFromDtoToEntity(hotelRoomDto);
+            HotelRoomsPK hotelRoomsPK = HotelRoomsPK.builder().hotelId(hotelRoomDto.getHotelId()).roomNumber(hotelRoomDto.getRoomNumber()).build();
+            if(hotelRoomsService.findHotelRoomById(hotelRoomsPK) != null) {
+                return new ResponseEntity<>(Boolean.FALSE, HttpStatus.ALREADY_REPORTED);
+            }
             hotelRoomsService.add(hotelRoom);
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {
