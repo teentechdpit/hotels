@@ -28,6 +28,7 @@ public class UserDto extends SimpleUserDto {
         this.roleName = roleName;
         this.rights = rights;
         this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
         this.expiryDate = expiryDate;
         this.tokenType = tokenType;
     }

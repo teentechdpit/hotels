@@ -5,6 +5,9 @@ import com.teentech.hotels.dto.UserDto;
 import com.teentech.hotels.model.RefreshToken;
 import com.teentech.hotels.model.UserRights;
 import com.teentech.hotels.payload.request.LoginRequest;
+import com.teentech.hotels.payload.request.TokenRefreshRequest;
+import com.teentech.hotels.payload.response.TokenRefreshResponse;
+import com.teentech.hotels.security.RefreshTokenException;
 import com.teentech.hotels.security.jwt.JwtUtils;
 import com.teentech.hotels.security.service.UserDetailsImpl;
 import com.teentech.hotels.service.RefreshTokenService;
@@ -58,19 +61,16 @@ public class AuthenticationController {
         }
     }
 
-//    @PostMapping("/refreshtoken")
-//    public ResponseEntity<?> refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
-//
-//        String requestRefreshToken = request.getRefreshToken();
-//
-//        RefreshTokenService refreshTokenService = new RefreshTokenService();
-//
-//        return refreshTokenService.findByToken(requestRefreshToken)
-//                .map(refreshTokenService::verifyExpiration) !!! EROARE AICI "Unhandled exception: java.lang.Exception"
-//                .map(RefreshToken::getUser)
-//                .map(user -> {
-//                    String token = jwtUtils.generateTokenFromUsername(user.getUsername());
-//                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
-//                }).orElseThrow(() -> new Exception("Refresh token not in database!"));
-//    }
+    @PostMapping("/refreshtoken")
+    public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest request) {
+        String requestRefreshToken = request.getRefreshToken();
+
+        return refreshTokenService.findByToken(requestRefreshToken)
+                .map(refreshTokenService::verifyExpiration)
+                .map(user -> {
+                    String token = jwtUtils.generateTokenFromUsername(user.getUsername());
+                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
+                })
+                .orElseThrow(() -> new RefreshTokenException(requestRefreshToken +  "Refresh token is not in database!"));
+    }
 }

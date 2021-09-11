@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class HotelController {
     @Autowired
     private HotelService hotelService;
 
+    @PreAuthorize("hasRole('ROLE_OWNER')")
     @GetMapping
     public ResponseEntity<List<Hotel>> getAllHotels() {
         try {
@@ -35,6 +37,7 @@ public class HotelController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_OWNER') or hasRole('ROLE_MANAGER')")
     @GetMapping("{id}")
     public ResponseEntity<Hotel> getHotelById(@PathVariable Long id) {
         try {
@@ -52,6 +55,7 @@ public class HotelController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_OWNER')")
     @PostMapping
     public ResponseEntity<Boolean> addHotel(@RequestBody HotelDto hotelDto) {
         try {
@@ -64,6 +68,7 @@ public class HotelController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_OWNER') or hasRole('ROLE_MANAGER')")
     @PutMapping
     public ResponseEntity<Boolean> updateHotel(@RequestBody HotelDto hotelDto) {
         try {
@@ -76,8 +81,9 @@ public class HotelController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_OWNER')")
     @DeleteMapping("{id}")
-    public ResponseEntity<Boolean> updateHotel(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteHotel(@PathVariable Long id) {
         try {
             Optional<Hotel> hotel = hotelService.getHotelById(id);
             if (hotel.isPresent()) {

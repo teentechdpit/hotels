@@ -1,15 +1,15 @@
 package com.teentech.hotels.security.service;
 
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.teentech.hotels.model.UserRole;
@@ -36,8 +36,10 @@ public class UserDetailsImpl implements UserDetails {
 
     private long hotelId;
 
+    private Collection<? extends GrantedAuthority> authorities;
+
     public UserDetailsImpl(String username, String password, String language, String mail, UserRole userRole,
-                           Long roleId, long hotelId) {
+                           Long roleId, long hotelId, Collection<? extends GrantedAuthority> authorities) {
         this.username = username;
         this.password = password;
         this.language = language;
@@ -45,9 +47,11 @@ public class UserDetailsImpl implements UserDetails {
         this.userRole = userRole;
         this.roleId = roleId;
         this.hotelId = hotelId;
+        this.authorities = authorities;
     }
 
     public static UserDetailsImpl build(@NotNull User user) {
+        List<GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_" + user.getRole().getName().toUpperCase()));
         return new UserDetailsImpl(
                 user.getUsername(),
                 user.getPassword(),
@@ -55,13 +59,13 @@ public class UserDetailsImpl implements UserDetails {
                 user.getMail(),
                 user.getRole(),
                 user.getRoleId(),
-                user.getHotelId()
+                user.getHotelId() , authorities
         );
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        return authorities;
     }
 
     @Override
