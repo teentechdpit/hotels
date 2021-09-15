@@ -34,7 +34,7 @@ public class DocumentService {
         imageByte = Base64.getDecoder().decode(imageString);
         InputStream is = new ByteArrayInputStream(imageByte);
 
-        File file = new ClassPathResource("\\templates\\ReservationTemplate.docx").getFile();
+        File file = new ClassPathResource("/templates/ReservationTemplate.docx").getFile();
         try (XWPFDocument doc = new XWPFDocument(new FileInputStream(file))) {
             List<XWPFParagraph> xwpfParagraphList = doc.getParagraphs();
 
