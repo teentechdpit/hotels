@@ -121,7 +121,7 @@ public class ReservationsController {
             }
 
             if (Boolean.FALSE.equals(reservationToSave.getEverydayCleaning())) {
-                HotelRoomsPK hotelRoomsPK = new HotelRoomsPK(reservationToSave.getHotelId(), reservationToSave.getRoomNumber());
+                HotelRoomsPK hotelRoomsPK = new HotelRoomsPK(reservationToSave.getRoomNumber(), reservationToSave.getHotelId());
                 HotelRooms room = hotelRoomsService.findHotelRoomById(hotelRoomsPK);
 
                 long noOfDays = DAYS.between(reservationToSave.getStartDate().toLocalDate(), reservationToSave.getEndDate().toLocalDate());
