@@ -67,7 +67,7 @@ public class ReservationsController {
         try {
             Reservations reservation = reservationService.getCurrentReservation(hotelId, roomNumber);
 
-            if(reservation == null) {
+            if (reservation == null) {
                 log.error("Reservation not found on get by id for room number {}", roomNumber);
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -88,8 +88,8 @@ public class ReservationsController {
 
             Reservations reservation = reservationService.getCurrentReservation(hotelId, roomNumber);
 
-            if(reservation == null) {
-                log.error("Reservation not found for checkout for room {}", roomNumber );
+            if (reservation == null) {
+                log.error("Reservation not found for checkout for room {}", roomNumber);
                 return new ResponseEntity<>(Boolean.FALSE, HttpStatus.NO_CONTENT);
             }
 
@@ -116,12 +116,12 @@ public class ReservationsController {
             reservationToSave.setCheckoutCompleted(false);
 
             Optional<Hotel> hotel = hotelService.getHotelById(reservation.getHotelId());
-            if(!hotel.isPresent()) {
+            if (!hotel.isPresent()) {
                 return new ResponseEntity<>(Boolean.FALSE, HttpStatus.NO_CONTENT);
             }
 
             if (Boolean.FALSE.equals(reservationToSave.getEverydayCleaning())) {
-                HotelRoomsPK hotelRoomsPK = new HotelRoomsPK(reservationToSave.getRoomNumber(), reservationToSave.getHotelId());
+                HotelRoomsPK hotelRoomsPK = HotelRoomsPK.builder().hotelId(reservationToSave.getHotelId()).roomNumber(reservationToSave.getRoomNumber()).build();
                 HotelRooms room = hotelRoomsService.findHotelRoomById(hotelRoomsPK);
 
                 long noOfDays = DAYS.between(reservationToSave.getStartDate().toLocalDate(), reservationToSave.getEndDate().toLocalDate());
