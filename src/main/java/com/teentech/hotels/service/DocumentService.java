@@ -33,17 +33,8 @@ public class DocumentService {
     public ByteArrayOutputStream updateTemplateDoc(ReservationSignatureDto reservation, Hotel hotel)
             throws IOException, InvalidFormatException {
 
-        File templateFile = resourceFile.getFile();
-        log.info("Template file name: ", resourceFile.getFilename());
-        log.info("File size {}  and file exists is  {}", templateFile.length(), templateFile.exists());
-
-        String signatureData = reservation.getSignature();
-        String[] parts = signatureData.split(",");
-        String imageString = parts[1];
-        byte[] imageByte = Base64.getDecoder().decode(imageString);
-        InputStream is = new ByteArrayInputStream(imageByte);
-
-        try (XWPFDocument doc = new XWPFDocument(new FileInputStream(templateFile))) {
+        InputStream fis = resourceFile.getInputStream();
+        try (XWPFDocument doc = new XWPFDocument(fis)) {
             List<XWPFParagraph> xwpfParagraphList = doc.getParagraphs();
 
             for (XWPFParagraph xwpfParagraph : xwpfParagraphList) {
@@ -69,7 +60,12 @@ public class DocumentService {
 
             XWPFParagraph paragraph = doc.createParagraph();
             XWPFRun run = paragraph.createRun();
-            run.addPicture(is, Document.PICTURE_TYPE_PNG, "", WIDTH, HEIGHT);
+            String signatureData = reservation.getSignature();
+            String[] parts = signatureData.split(",");
+            String imageString = parts[1];
+            byte[] imageByte = Base64.getDecoder().decode(imageString);
+            InputStream iis = new ByteArrayInputStream(imageByte);
+            run.addPicture(iis, Document.PICTURE_TYPE_PNG, "", WIDTH, HEIGHT);
 
             try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
                 doc.write(out);
