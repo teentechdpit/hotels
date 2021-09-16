@@ -3,11 +3,15 @@ package com.teentech.hotels.service;
 
 import com.teentech.hotels.dto.ReservationSignatureDto;
 import com.teentech.hotels.model.Hotel;
+import lombok.extern.log4j.Log4j2;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.Document;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -16,26 +20,30 @@ import java.util.Base64;
 import java.util.List;
 
 @Service
+@Log4j2
 public class DocumentService {
+
+    @Value("classpath:templates/ReservationTemplate.docx")
+    Resource resourceFile;
 
     private static final int WIDTH = 432;
 
     private static final int HEIGHT = 20;
 
     public ByteArrayOutputStream updateTemplateDoc(ReservationSignatureDto reservation, Hotel hotel)
-            throws IOException, org.apache.poi.openxml4j.exceptions.InvalidFormatException {
-        String sourceData = reservation.getSignature();
+            throws IOException, InvalidFormatException {
 
-        String[] parts = sourceData.split(",");
+        File templateFile = resourceFile.getFile();
+        log.info("Template file name: ", resourceFile.getFilename());
+        log.info("File size {}  and file exists is  {}", templateFile.length(), templateFile.exists());
+
+        String signatureData = reservation.getSignature();
+        String[] parts = signatureData.split(",");
         String imageString = parts[1];
-
-        byte[] imageByte;
-
-        imageByte = Base64.getDecoder().decode(imageString);
+        byte[] imageByte = Base64.getDecoder().decode(imageString);
         InputStream is = new ByteArrayInputStream(imageByte);
 
-        File file = new ClassPathResource("/templates/ReservationTemplate.docx").getFile();
-        try (XWPFDocument doc = new XWPFDocument(new FileInputStream(file))) {
+        try (XWPFDocument doc = new XWPFDocument(new FileInputStream(templateFile))) {
             List<XWPFParagraph> xwpfParagraphList = doc.getParagraphs();
 
             for (XWPFParagraph xwpfParagraph : xwpfParagraphList) {
