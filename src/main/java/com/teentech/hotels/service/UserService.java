@@ -60,10 +60,10 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void sendEmailForAuth(String to, String uuid) throws MessagingException {
+    public void sendEmailForAuth(String username, String to, String uuid) throws MessagingException {
 
         String applicationHost = System.getenv("APPLICATION_HOST");
-        String mailText = "Link for confirm your mail and set the password " + applicationHost + "/users/confirmation/" + uuid;
+        String mailText = "Link for confirm your mail and set the password for user - <strong style=\"color:red\">" +  username +" </strong> - is: " + applicationHost + "users/confirmation/" + uuid;
         EmailDto emailDto = EmailDto.builder().to(to).subject("Confirm authentication to HotelListe").content(mailText).build();
         mailService.send(emailDto);
         log.info("Email send successfully to address {}", to);

@@ -70,7 +70,7 @@ public class UserController {
             userService.add(userToSave);
             Registration registration = new Registration(uuidAsString, user.getUsername());
             registrationService.add(registration);
-            userService.sendEmailForAuth(user.getMail(), uuidAsString);
+            userService.sendEmailForAuth(user.getUsername(), user.getMail(), uuidAsString);
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (MessagingException e) {
             log.error("Error while sending mail to user", e);
