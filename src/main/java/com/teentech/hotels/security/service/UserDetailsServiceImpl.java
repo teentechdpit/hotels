@@ -19,9 +19,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = Optional.ofNullable(Optional.of(userRepository.findByUsername(username))
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username)));
+        Optional<User> user = Optional.ofNullable(Optional.ofNullable(userRepository.findByUsername(username))
+                .orElseThrow(() -> new UsernameNotFoundException("User not Found with username: " + username)));
 
-        return UserDetailsImpl.build(user.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username)));
+        return UserDetailsImpl.build(user.orElseThrow(() -> new UsernameNotFoundException("User not Found with username: " + username)));
     }
 }
