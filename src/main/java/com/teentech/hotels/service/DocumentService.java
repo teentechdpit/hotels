@@ -65,7 +65,7 @@ public class DocumentService {
             String imageString = parts[1];
             byte[] imageByte = Base64.getDecoder().decode(imageString);
             InputStream iis = new ByteArrayInputStream(imageByte);
-            run.addPicture(iis, Document.PICTURE_TYPE_PNG, "", WIDTH, HEIGHT);
+            run.addPicture(iis, Document.PICTURE_TYPE_PNG, "Signature", WIDTH, HEIGHT);
 
             try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
                 doc.write(out);

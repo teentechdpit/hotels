@@ -12,6 +12,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -26,6 +27,7 @@ public class CleanController {
     @Autowired
     private CleanService cleanService;
 
+    @PreAuthorize("hasRole('ROLE_CLEAN PERSONAL') or hasRole('ROLE_MANAGER')")
     @GetMapping
     public ResponseEntity<CleanDto> getCleanById(@RequestParam long hotelId, @RequestParam long roomNumber ) {
         try {
@@ -43,6 +45,7 @@ public class CleanController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_CLEAN PERSONAL') or hasRole('ROLE_MANAGER')")
     @PostMapping
     public ResponseEntity<Boolean> addClean(@RequestBody CleanDto cleanDto) {
         try {
@@ -56,6 +59,7 @@ public class CleanController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_CLEAN PERSONAL') or hasRole('ROLE_MANAGER')")
     @PutMapping
     public ResponseEntity<Boolean> updateClean(@RequestBody CleanDto cleanDto) {
         try {
@@ -70,6 +74,7 @@ public class CleanController {
     }
 
 
+    @PreAuthorize("hasRole('ROLE_CLEAN PERSONAL') or hasRole('ROLE_MANAGER')")
     @DeleteMapping
     public ResponseEntity<Boolean> deleteClean(@RequestBody HotelRoomsPK hotelRoomPK) {
         try {

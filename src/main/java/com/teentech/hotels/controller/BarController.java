@@ -14,6 +14,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,6 +33,7 @@ public class BarController {
     @Autowired
     private MailService mailService;
 
+    @PreAuthorize("hasRole('ROLE_RESTAURANT MEMBER') or hasRole('ROLE_MANAGER')")
     @GetMapping
     public ResponseEntity<BarDto> getBarById(@RequestParam long hotelId, @RequestParam long roomNumber) {
         try {
@@ -48,6 +50,7 @@ public class BarController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_RESTAURANT MEMBER') or hasRole('ROLE_MANAGER')")
     @PutMapping
     public ResponseEntity<Boolean> updateBar(@RequestBody BarDto barDto) {
         try {
@@ -61,6 +64,9 @@ public class BarController {
                     "You have <b>" + bar.getNoOfDrinks() + " more drinks</b> to savor. &#128513;</p>";
 
             Reservations reservation = reservationService.getCurrentReservation(bar.getHotelId(), bar.getRoomNumber());
+            if ( reservation == null ) {
+                return new ResponseEntity<>(Boolean.FALSE, HttpStatus.NO_CONTENT);
+            }
             EmailDto emailDto = EmailDto.builder().to(reservation.getEmail()).subject("Drinks status").content(htmlText).build();
 
             mailService.send(emailDto);
@@ -72,8 +78,9 @@ public class BarController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_RESTAURANT MEMBER') or hasRole('ROLE_MANAGER')")
     @DeleteMapping
-    public ResponseEntity<Boolean> deleteClean(@RequestBody HotelRoomsPK hotelRoomPK) {
+    public ResponseEntity<Boolean> deleteBar(@RequestBody HotelRoomsPK hotelRoomPK) {
         try {
             Bar bar = barService.findBarById(hotelRoomPK);
             barService.delete(bar);

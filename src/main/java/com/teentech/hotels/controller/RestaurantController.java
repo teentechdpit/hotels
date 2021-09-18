@@ -12,6 +12,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -31,6 +32,7 @@ public class RestaurantController {
     @Autowired
     private ReservationService reservationService;
 
+    @PreAuthorize("hasRole('ROLE_RESTAURANT MEMBER') or hasRole('ROLE_MANAGER')")
     @GetMapping
     public ResponseEntity<RestaurantDto> getRestaurantByHotelRoomPk(@RequestParam long hotelId, @RequestParam long roomNumber) {
         try {
@@ -53,6 +55,7 @@ public class RestaurantController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_RESTAURANT MEMBER') or hasRole('ROLE_MANAGER')")
     @PutMapping
     public ResponseEntity<Boolean> updateRestaurant(@RequestBody RestaurantDto currentRestaurantDto) {
         try {
