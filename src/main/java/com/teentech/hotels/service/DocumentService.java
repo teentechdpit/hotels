@@ -26,9 +26,9 @@ public class DocumentService {
     @Value("classpath:templates/ReservationTemplate.docx")
     Resource resourceFile;
 
-    private static final int WIDTH = 432;
+    private static final int WIDTH = 250;
 
-    private static final int HEIGHT = 20;
+    private static final int HEIGHT = 120;
 
     public ByteArrayOutputStream updateTemplateDoc(ReservationSignatureDto reservation, Hotel hotel)
             throws IOException, InvalidFormatException {
@@ -65,7 +65,7 @@ public class DocumentService {
             String imageString = parts[1];
             byte[] imageByte = Base64.getDecoder().decode(imageString);
             InputStream iis = new ByteArrayInputStream(imageByte);
-            run.addPicture(iis, Document.PICTURE_TYPE_PNG, "Signature", WIDTH, HEIGHT);
+            run.addPicture(iis, Document.PICTURE_TYPE_PNG, "", WIDTH, HEIGHT);
 
             try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
                 doc.write(out);
