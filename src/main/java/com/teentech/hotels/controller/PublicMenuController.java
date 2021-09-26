@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("")
+@RequestMapping("/public/menu")
 @Log4j2
 public class PublicMenuController {
 
