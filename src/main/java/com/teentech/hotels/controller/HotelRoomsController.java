@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -28,6 +29,7 @@ public class HotelRoomsController {
     @Autowired
     private HotelRoomsService hotelRoomsService;
 
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PostMapping
     public ResponseEntity<Boolean> addRoom(@RequestBody HotelRoomsDto hotelRoomDto) {
         try {
@@ -44,6 +46,7 @@ public class HotelRoomsController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_RECEPTION MEMBER')")
     @GetMapping
     public ResponseEntity<List<HotelRoomsDto>> findRooms(@RequestParam Long hotelId, @RequestParam String view, @RequestParam java.sql.Date startDate, @RequestParam Date endDate, @RequestParam int noOfPeople, @RequestParam String roomType) {
         try {
@@ -64,6 +67,7 @@ public class HotelRoomsController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     @DeleteMapping
     public ResponseEntity<Boolean> deleteRoom(@RequestBody HotelRoomsPK hotelRoomPK) {
         try {

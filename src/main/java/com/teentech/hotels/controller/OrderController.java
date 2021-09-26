@@ -13,6 +13,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -35,6 +36,7 @@ public class OrderController {
     @Autowired
     private MailService mailService;
 
+    @PreAuthorize("hasRole('ROLE_RESTAURANT MEMBER') or hasRole('ROLE_MANAGER')")
     @GetMapping
     public ResponseEntity<List<OrderDto>> getOrderOfReservation(@RequestParam Long reservationID) {
         try {
@@ -58,6 +60,7 @@ public class OrderController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_RESTAURANT MEMBER') or hasRole('ROLE_MANAGER')")
     @PostMapping
     public ResponseEntity<Boolean> addOrder(@RequestBody List<OrderDto> ordersDto) {
         try {

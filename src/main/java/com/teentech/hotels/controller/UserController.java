@@ -15,6 +15,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,7 @@ public class UserController {
     @Autowired
     private RegistrationService registrationService;
 
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
     @GetMapping
     public ResponseEntity<UserDto> getAuthenticatedUser(@RequestParam String userName, @RequestParam String password) {
         try {
@@ -53,6 +55,7 @@ public class UserController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_OWNER') or hasRole('ROLE_MANAGER')")
     @PostMapping
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Boolean> addUser(@RequestBody SimpleUserDto user) {
@@ -112,6 +115,7 @@ public class UserController {
         return null;
     }
 
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
     @DeleteMapping
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Boolean> deleteUser(@RequestParam String userName) {
@@ -130,6 +134,7 @@ public class UserController {
     }
 
 
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
     @PutMapping
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Boolean> updateUser(@RequestBody UserDto userDto) {

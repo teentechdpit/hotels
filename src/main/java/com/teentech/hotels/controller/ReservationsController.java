@@ -12,6 +12,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
@@ -45,6 +46,7 @@ public class ReservationsController {
     @Autowired
     private MailService mailService;
 
+    @PreAuthorize("hasRole('ROLE_RECEPTION MEMBER') or hasRole('ROLE_MANAGER')")
     @GetMapping
     public ResponseEntity<ReservationDto> getReservation(@RequestParam Long hotelId, @RequestParam Long roomNumber) {
         try {
@@ -62,6 +64,7 @@ public class ReservationsController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_RECEPTION MEMBER') or hasRole('ROLE_MANAGER')")
     @GetMapping("/id")
     public ResponseEntity<Long> getId(@RequestParam Long hotelId, @RequestParam Long roomNumber) {
         try {
@@ -80,6 +83,7 @@ public class ReservationsController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_RECEPTION MEMBER') or hasRole('ROLE_MANAGER')")
     @PutMapping("/checkout")
     public ResponseEntity<Boolean> checkout(@RequestBody HotelRoomsPK hotelRoomsPK) {
         try {
@@ -108,6 +112,7 @@ public class ReservationsController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_RECEPTION MEMBER') or hasRole('ROLE_MANAGER')")
     @PostMapping
     public ResponseEntity<Boolean> addReservation(@RequestBody ReservationSignatureDto reservation) {
         try {
@@ -156,6 +161,7 @@ public class ReservationsController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_RECEPTION MEMBER') or hasRole('ROLE_MANAGER')")
     @DeleteMapping("{id}")
     public ResponseEntity<Boolean> deleteReservation(@PathVariable Long id) {
         try {
@@ -171,6 +177,7 @@ public class ReservationsController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_RECEPTION MEMBER') or hasRole('ROLE_MANAGER')")
     @PutMapping
     public ResponseEntity<Boolean> updateReservation(@RequestBody ReservationDto reservationDto) {
         try {

@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class MenuController {
     @Autowired
     private ItemTypeService itemTypeService;
 
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_RESTAURANT MEMBER')")
     @GetMapping("{hotelId}")
     public ResponseEntity<List<MenuItemDto>> getMenuByHotelId(@PathVariable int hotelId) {
         try {
@@ -46,6 +48,7 @@ public class MenuController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_RESTAURANT MEMBER')")
     @PostMapping
     public ResponseEntity<Boolean> addItemToMenu(@RequestBody MenuItemDto menuItemDto) {
         try {
@@ -59,6 +62,7 @@ public class MenuController {
             return new ResponseEntity<>(Boolean.FALSE, HttpStatus.INTERNAL_SERVER_ERROR);        }
     }
 
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_RESTAURANT MEMBER')")
     @DeleteMapping
     public ResponseEntity<Boolean> deleteItemFromMenu(@RequestParam int id) {
         try {
