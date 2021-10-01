@@ -29,8 +29,8 @@ public class DocumentService {
     @Value("classpath:templates/ReservationTemplate.docx")
     Resource resourceFile;
 
-    private static final int WIDTH = 432;
-
+    private static final int WIDTH = 250;
+  
     private static final int HEIGHT = 150;
 
     public ByteArrayOutputStream updateTemplateDoc(ReservationSignatureDto reservation, Hotel hotel)
@@ -68,6 +68,7 @@ public class DocumentService {
             String imageString = parts[1];
             byte[] imageByte = Base64.getDecoder().decode(imageString);
             InputStream iis = new ByteArrayInputStream(imageByte);
+
             run.addPicture(iis, Document.PICTURE_TYPE_PNG, "", Units.toEMU(WIDTH), Units.toEMU(HEIGHT));
 
             try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
