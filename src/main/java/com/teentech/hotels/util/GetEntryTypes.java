@@ -1,8 +1,6 @@
 package com.teentech.hotels.util;
 
-import com.teentech.hotels.dto.ItemTypeDto;
 import com.teentech.hotels.dto.MenuItemForPageDto;
-import com.teentech.hotels.model.ItemType;
 import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;

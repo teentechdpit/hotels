@@ -36,7 +36,7 @@ public class CleanController {
             if (clean == null) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            System.out.println(clean);
+
             CleanDto cleanDto = CleanConverter.convertFromEntityToDto(clean);
             return new ResponseEntity<>(cleanDto, HttpStatus.OK);
         } catch (Exception e) {

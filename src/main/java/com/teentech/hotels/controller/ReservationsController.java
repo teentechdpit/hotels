@@ -97,7 +97,7 @@ public class ReservationsController {
                 return new ResponseEntity<>(Boolean.FALSE, HttpStatus.NO_CONTENT);
             }
 
-            if (reservation.getCheckoutCompleted()) {
+            if (Boolean.TRUE.equals(reservation.getCheckoutCompleted())) {
                 log.error("Checkout already completed!");
                 return new ResponseEntity<>(Boolean.FALSE, HttpStatus.ALREADY_REPORTED);
             }

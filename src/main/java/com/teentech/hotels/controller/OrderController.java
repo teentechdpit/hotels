@@ -77,15 +77,17 @@ public class OrderController {
                 ordersDto.get(i).setOrderDate(currentDate);
             }
 
-            String htmlText = "<h1 style=\"text-align:center;  font-family:'FranklinGothicMedium','ArialNarrow',Arial,sans-serif;" +
+            StringBuilder bld = new StringBuilder();
+
+            bld.append("<h1 style=\"text-align:center;  font-family:'FranklinGothicMedium','ArialNarrow',Arial,sans-serif;" +
                     "font-weight:100;font-size:2vw;color:#0e77de;margin-top:3vw;margin-bottom:3vw;\">&#127789; Order confirmation &#127790;</h1>" +
-                    "<p style=\"text-align:center;font-family:'GillSans','GillSansMT',Calibri,'TrebuchetMS',sans-serif;font-size:1vw;\">";
+                    "<p style=\"text-align:center;font-family:'GillSans','GillSansMT',Calibri,'TrebuchetMS',sans-serif;font-size:1vw;\">");
 
             Long totalPrice = 0L;
             for (OrderDto orderDto : ordersDto) {
                 orderService.add(OrderConverter.convertFromDtoToEntity(orderDto));
                 totalPrice += orderDto.getTotalPrice();
-                htmlText += "You have ordered <b>" + orderDto.getNumberOfPieces() + " pieces of " + orderDto.getNameOfEntry() + " with price of " + orderDto.getTotalPrice() + " " + orderDto.getCurrency() + " &#129316; </b>.<br>";
+                bld.append("You have ordered <b>").append(orderDto.getNumberOfPieces()).append(" pieces of ").append(orderDto.getNameOfEntry()).append(" with price of ").append(orderDto.getTotalPrice()).append(" ").append(orderDto.getCurrency()).append(" &#129316; </b>.<br>");
             }
 
             reservation.setCheckout(reservation.getCheckout() + totalPrice);
@@ -94,7 +96,9 @@ public class OrderController {
 
             reservationService.update(reservation);
 
-            htmlText += "The total price of the order is <b>" + totalPrice + " " + ordersDto.get(0).getCurrency() + "</b>. Thanks for ordering from us!</p>";
+            bld.append("The total price of the order is <b>").append(totalPrice).append(" ").append(ordersDto.get(0).getCurrency()).append("</b>. Thanks for ordering from us!</p>");
+
+            String htmlText = bld.toString();
 
             EmailDto emailDto = EmailDto.builder().to(reservation.getEmail()).subject("Order confirmation").content(htmlText).build();
 

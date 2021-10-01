@@ -5,16 +5,19 @@ import com.teentech.hotels.dto.ReservationSignatureDto;
 import com.teentech.hotels.model.Hotel;
 import lombok.extern.log4j.Log4j2;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.Document;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.util.Base64;
 import java.util.List;
@@ -27,8 +30,8 @@ public class DocumentService {
     Resource resourceFile;
 
     private static final int WIDTH = 250;
-
-    private static final int HEIGHT = 120;
+  
+    private static final int HEIGHT = 150;
 
     public ByteArrayOutputStream updateTemplateDoc(ReservationSignatureDto reservation, Hotel hotel)
             throws IOException, InvalidFormatException {
@@ -65,7 +68,8 @@ public class DocumentService {
             String imageString = parts[1];
             byte[] imageByte = Base64.getDecoder().decode(imageString);
             InputStream iis = new ByteArrayInputStream(imageByte);
-            run.addPicture(iis, Document.PICTURE_TYPE_PNG, "", WIDTH, HEIGHT);
+
+            run.addPicture(iis, Document.PICTURE_TYPE_PNG, "", Units.toEMU(WIDTH), Units.toEMU(HEIGHT));
 
             try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
                 doc.write(out);

@@ -1,9 +1,7 @@
 package com.teentech.hotels.dto;
 
-import javassist.Loader;
 import lombok.*;
 
-import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 
