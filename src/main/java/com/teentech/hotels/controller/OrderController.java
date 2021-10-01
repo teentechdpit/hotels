@@ -42,14 +42,14 @@ public class OrderController {
         try {
             List<Order> orders = orderService.getOrderByReservation(reservationID);
 
-            if(orders.isEmpty()) {
+            if (orders.isEmpty()) {
                 log.error("There is no order for this reservation id");
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
             List<OrderDto> ordersDto = new ArrayList<>();
 
-            for(Order order : orders) {
+            for (Order order : orders) {
                 ordersDto.add(OrderConverter.convertFromEntityToDto(order));
             }
 
@@ -65,8 +65,7 @@ public class OrderController {
     public ResponseEntity<Boolean> addOrder(@RequestBody List<OrderDto> ordersDto) {
         try {
             Reservations reservation = reservationService.getReservationById(ordersDto.get(0).getReservationId());
-            if (reservation == null)
-            {
+            if (reservation == null) {
                 log.error("No reservation with this id");
                 return new ResponseEntity<>(Boolean.FALSE, HttpStatus.NO_CONTENT);
             }
@@ -90,7 +89,11 @@ public class OrderController {
                 bld.append("You have ordered <b>").append(orderDto.getNumberOfPieces()).append(" pieces of ").append(orderDto.getNameOfEntry()).append(" with price of ").append(orderDto.getTotalPrice()).append(" ").append(orderDto.getCurrency()).append(" &#129316; </b>.<br>");
             }
 
-            reservation.setCheckout(reservation.getCheckout() + totalPrice);
+            long reservationTotal = 0L;
+            if (reservation.getCheckout() != null) {
+                reservationTotal = reservation.getCheckout();
+            }
+            reservation.setCheckout(reservationTotal + totalPrice);
 
             reservation.setCurrency(ordersDto.get(0).getCurrency());
 
