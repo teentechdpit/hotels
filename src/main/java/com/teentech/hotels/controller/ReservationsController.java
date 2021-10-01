@@ -46,7 +46,7 @@ public class ReservationsController {
     @Autowired
     private MailService mailService;
 
-    @PreAuthorize("hasRole('ROLE_RECEPTION MEMBER') or hasRole('ROLE_MANAGER')")
+    @PreAuthorize("hasRole('ROLE_RECEPTION MEMBER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_RESTAURANT MEMBER')")
     @GetMapping
     public ResponseEntity<ReservationDto> getReservation(@RequestParam Long hotelId, @RequestParam Long roomNumber) {
         try {

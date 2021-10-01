@@ -36,6 +36,8 @@ public class ReservationsConverter {
 
         ReservationDto reservationDto = new ReservationDto();
 
+        reservationDto.setId(reservation.getId());
+
         reservationDto.setHotelId(reservation.getHotelId());
 
         reservationDto.setRoomNumber(reservation.getRoomNumber());

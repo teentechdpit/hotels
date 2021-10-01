@@ -12,6 +12,8 @@ import java.sql.Date;
 @Builder
 public class ReservationDto implements Serializable {
 
+    private Long id;
+
     private Long hotelId;
 
     private Long roomNumber;

@@ -41,10 +41,10 @@ public class UserController {
     @Autowired
     private RegistrationService registrationService;
 
-    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
     @GetMapping
     public ResponseEntity<UserDto> getAuthenticatedUser(@RequestParam String userName, @RequestParam String password) {
         try {
+            System.out.println("M-am tuns");
             UserDto authUser = userService.getUserByName(userName, password);
             if (authUser != null) {
                 return new ResponseEntity<>(authUser, HttpStatus.OK);
